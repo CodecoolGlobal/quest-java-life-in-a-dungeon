@@ -13,10 +13,16 @@ public abstract class Actor implements Drawable {
     }
 
     public void move(int dx, int dy) {
-        Cell nextCell = cell.getNeighbor(dx, dy);
-        cell.setActor(null);
-        nextCell.setActor(this);
-        cell = nextCell;
+        try {
+            Cell nextCell = cell.getNeighbor(dx, dy);
+            if (!nextCell.getTileName().matches("wall|empty") && nextCell.getActor() == null) {
+                cell.setActor(null);
+                nextCell.setActor(this);
+                cell = nextCell;
+            }
+        }catch (ArrayIndexOutOfBoundsException e){
+            System.out.println("Index out of bounds:" + e);
+        }
     }
 
     public int getHealth() {
