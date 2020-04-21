@@ -1,6 +1,7 @@
 package com.codecool.quest;
 
 import com.codecool.quest.logic.Cell;
+import com.codecool.quest.logic.Fight;
 import com.codecool.quest.logic.GameMap;
 import com.codecool.quest.logic.MapLoader;
 import javafx.application.Application;
@@ -78,6 +79,9 @@ public class Main extends Application {
                 refresh();
                 break;
         }
+        Fight fight = new Fight();
+        fight.standardFight(map.getPlayer());
+        refresh();
     }
 
     private void refresh() {

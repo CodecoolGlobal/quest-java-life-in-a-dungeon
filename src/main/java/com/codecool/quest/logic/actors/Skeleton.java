@@ -10,6 +10,9 @@ public class Skeleton extends Actor {
 
     @Override
     public String getTileName() {
+        if (this.getHealth() <= 0){
+            return "deathSkeleton";
+        }
         return "skeleton";
     }
 }
