@@ -14,6 +14,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.scene.control.Button;
 
 public class Main extends Application {
     GameMap map = MapLoader.loadMap();
@@ -33,7 +34,15 @@ public class Main extends Application {
         ui.setPrefWidth(200);
         ui.setPadding(new Insets(10));
 
+        Button button = new Button("Pick up");
+
+        button.setOnAction(value -> {
+            System.out.println("almakompót");
+        });
+
+        button.setFocusTraversable(false);
         ui.add(new Label("Health: "), 0, 0);
+        ui.add(button,0,1);
         ui.add(healthLabel, 1, 0);
 
         BorderPane borderPane = new BorderPane();
@@ -79,6 +88,8 @@ public class Main extends Application {
                 Cell cell = map.getCell(x, y);
                 if (cell.getActor() != null) {
                     Tiles.drawTile(context, cell.getActor(), x, y);
+                } else if (cell.getItem() != null ) {
+                    Tiles.drawTile(context, cell.getItem(), x, y);
                 } else {
                     Tiles.drawTile(context, cell, x, y);
                 }
