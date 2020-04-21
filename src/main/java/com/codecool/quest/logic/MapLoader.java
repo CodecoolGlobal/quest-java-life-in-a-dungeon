@@ -3,6 +3,7 @@ package com.codecool.quest.logic;
 import com.codecool.quest.logic.actors.Player;
 import com.codecool.quest.logic.actors.Skeleton;
 import com.codecool.quest.logic.items.Door;
+import com.codecool.quest.logic.items.Key;
 import com.codecool.quest.logic.items.Shield;
 import com.codecool.quest.logic.items.Sword;
 
@@ -53,6 +54,9 @@ public class MapLoader {
                         case 'd':
                             cell.setType(CellType.DOOR);
                             new Door(cell);
+                        case 'k':
+                            cell.setType(CellType.FLOOR);
+                            new Key(cell);
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
