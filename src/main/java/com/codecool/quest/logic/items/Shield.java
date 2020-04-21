@@ -10,6 +10,4 @@ public class Shield extends Item {
         public String getTileName() {
             return "shield";
         }
-    }
-
-
+}
