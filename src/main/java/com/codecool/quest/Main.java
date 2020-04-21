@@ -1,9 +1,6 @@
 package com.codecool.quest;
 
-import com.codecool.quest.logic.Cell;
-import com.codecool.quest.logic.Fight;
-import com.codecool.quest.logic.GameMap;
-import com.codecool.quest.logic.MapLoader;
+import com.codecool.quest.logic.*;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -16,6 +13,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
+import java.util.ArrayList;
 
 public class Main extends Application {
     GameMap map = MapLoader.loadMap();
@@ -79,8 +77,11 @@ public class Main extends Application {
                 refresh();
                 break;
         }
+        ArrayList<String> aList= new ArrayList<>();
+        aList.add("key");
         Fight fight = new Fight();
         fight.standardFight(map.getPlayer());
+        DoorOpen.checkDoors(aList, map.getPlayer());
         refresh();
     }
 
@@ -94,7 +95,9 @@ public class Main extends Application {
                     Tiles.drawTile(context, cell.getActor(), x, y);
                 } else if (cell.getItem() != null ) {
                     Tiles.drawTile(context, cell.getItem(), x, y);
-                } else {
+                } else if (cell.getDoor() != null){
+                    Tiles.drawTile(context, cell.getDoor(), x, y);
+                }else {
                     Tiles.drawTile(context, cell, x, y);
                 }
             }
