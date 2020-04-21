@@ -13,7 +13,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
-import java.util.ArrayList;
 
 public class Main extends Application {
     GameMap map = MapLoader.loadMap();
@@ -37,7 +36,6 @@ public class Main extends Application {
         Button button = new Button("Pick up");
 
         button.setOnAction(value -> {
-            System.out.println("almakompót");
         });
 
         button.setFocusTraversable(false);
@@ -80,11 +78,9 @@ public class Main extends Application {
                 refresh();
                 break;
         }
-        ArrayList<String> aList= new ArrayList<>();
-        aList.add("key");
         Fight fight = new Fight();
         fight.standardFight(map.getPlayer());
-        DoorOpen.checkDoors(aList, map.getPlayer());
+        DoorOpen.checkDoors(map.getPlayer().getStuffedInventory(), map.getPlayer());
         refresh();
     }
 
