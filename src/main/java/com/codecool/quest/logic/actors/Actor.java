@@ -21,17 +21,17 @@ public abstract class Actor implements Drawable {
         try {
             Cell nextCell = cell.getNeighbor(dx, dy);
             if (!nextCell.getTileName().matches("wall|empty|closedDoor") && (nextCell.getActor() == null || !nextCell.getActor().getTileName().matches("skeleton"))) {
-            if (nextCell.getItem() != null) {
-                inventory.getInventory().add(nextCell.getItem().getTileName());
-                cell.setActor(null);
-                nextCell.setItem(null);
-                nextCell.setActor(this);
-                System.out.println(inventory.getInventory());
-                cell = nextCell;
-            } else if (!nextCell.getTileName().matches("wall|empty") && (nextCell.getActor() == null || !nextCell.getActor().getTileName().matches("skeleton"))) {
-                cell.setActor(null);
-                nextCell.setActor(this);
-                cell = nextCell;
+                if (nextCell.getItem() != null) {
+                    inventory.getInventory().add(nextCell.getItem().getTileName());
+                    cell.setActor(null);
+                    nextCell.setItem(null);
+                    nextCell.setActor(this);
+                    cell = nextCell;
+                } else if (!nextCell.getTileName().matches("wall|empty") && (nextCell.getActor() == null || !nextCell.getActor().getTileName().matches("skeleton"))) {
+                    cell.setActor(null);
+                    nextCell.setActor(this);
+                    cell = nextCell;
+                }
             }
 
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -43,7 +43,7 @@ public abstract class Actor implements Drawable {
         return inventory.getInventory();
     }
 
-    public void setHealth(int newHealth){
+    public void setHealth(int newHealth) {
         this.health = newHealth;
     }
 
