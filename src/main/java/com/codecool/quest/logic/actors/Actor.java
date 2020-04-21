@@ -15,7 +15,7 @@ public abstract class Actor implements Drawable {
     public void move(int dx, int dy) {
         try {
             Cell nextCell = cell.getNeighbor(dx, dy);
-            if (!nextCell.getTileName().matches("wall|empty") && nextCell.getActor() == null) {
+            if (!nextCell.getTileName().matches("wall|empty") && (nextCell.getActor() == null || !nextCell.getActor().getTileName().matches("skeleton"))) {
                 cell.setActor(null);
                 nextCell.setActor(this);
                 cell = nextCell;
@@ -23,6 +23,10 @@ public abstract class Actor implements Drawable {
         }catch (ArrayIndexOutOfBoundsException e){
             System.out.println("Index out of bounds:" + e);
         }
+    }
+
+    public void setHealth(int newHealth){
+        this.health = newHealth;
     }
 
     public int getHealth() {
