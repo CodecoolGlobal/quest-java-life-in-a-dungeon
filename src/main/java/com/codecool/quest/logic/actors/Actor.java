@@ -19,17 +19,21 @@ public abstract class Actor implements Drawable {
 
         try {
             Cell nextCell = cell.getNeighbor(dx, dy);
+
             if(nextCell.getActor() != null && nextCell.getActor().getTileName().equals("deathSkeleton")){
                 HealthLogic.increaseLife((Player) cell.getActor(), 2);
             }
-            if (!nextCell.getTileName().matches("wall|empty|closedDoor") && (nextCell.getActor() == null || !nextCell.getActor().getTileName().matches("skeleton"))) {
+            if(cell.getActor().getTileName().equals("deathPlayer")){
+                cell.setActor(nextCell.getActor());
+                nextCell.setActor(this);
+                cell = nextCell;
+            } else if (!nextCell.getTileName().matches("wall|empty|closedDoor") && (nextCell.getActor() == null || !nextCell.getActor().getTileName().matches("skeleton"))) {
                 if (nextCell.getItem() != null) {
                     inventory.getInventory().add(nextCell.getItem().getTileName());
                     cell.setActor(null);
                     nextCell.setItem(null);
                     nextCell.setActor(this);
                     cell = nextCell;
-
                 } else if (!nextCell.getTileName().matches("wall|empty") && (nextCell.getActor() == null || !nextCell.getActor().getTileName().matches("skeleton"))) {
                     cell.setActor(null);
                     nextCell.setActor(this);
