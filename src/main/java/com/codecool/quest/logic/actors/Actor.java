@@ -1,8 +1,6 @@
 package com.codecool.quest.logic.actors;
 
-import com.codecool.quest.logic.Cell;
-import com.codecool.quest.logic.Drawable;
-import com.codecool.quest.logic.Inventory;
+import com.codecool.quest.logic.*;
 
 import java.util.ArrayList;
 
@@ -18,8 +16,12 @@ public abstract class Actor implements Drawable {
     }
 
     public void move(int dx, int dy) {
+
         try {
             Cell nextCell = cell.getNeighbor(dx, dy);
+            if(nextCell.getActor() != null && nextCell.getActor().getTileName().equals("deathSkeleton")){
+                HealthLogic.increaseLife((Player) cell.getActor(), 2);
+            }
             if (!nextCell.getTileName().matches("wall|empty|closedDoor") && (nextCell.getActor() == null || !nextCell.getActor().getTileName().matches("skeleton"))) {
                 if (nextCell.getItem() != null) {
                     inventory.getInventory().add(nextCell.getItem().getTileName());
@@ -27,6 +29,7 @@ public abstract class Actor implements Drawable {
                     nextCell.setItem(null);
                     nextCell.setActor(this);
                     cell = nextCell;
+
                 } else if (!nextCell.getTileName().matches("wall|empty") && (nextCell.getActor() == null || !nextCell.getActor().getTileName().matches("skeleton"))) {
                     cell.setActor(null);
                     nextCell.setActor(this);
