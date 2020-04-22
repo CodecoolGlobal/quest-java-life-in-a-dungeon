@@ -21,10 +21,9 @@ public class Fight {
     }
 
     public void specialFight(Player player, Cell[] arrayCell, int playerDamage, int enemyDamage){
-        HealthLogic healthlogic = new HealthLogic();
         for(Cell element: arrayCell){
             if(element.getActor() != null && element.getActor().getHealth() > 0 && player.getHealth() > 0){
-                healthlogic.decreaseLife(player, playerDamage, element.getActor(), enemyDamage);
+                HealthLogic.decreaseLife(player, playerDamage, element.getActor(), enemyDamage);
             }
         }
     }
