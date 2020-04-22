@@ -78,8 +78,9 @@ public class Main extends Application {
                 refresh();
                 break;
         }
+
         Fight fight = new Fight();
-        fight.standardFight(map.getPlayer());
+        fight.checkWhichKindOfFightYouFightWithEnemyIfYouHaveItemsInYourInventory(map.getPlayer());
         DoorOpen.checkDoors(map.getPlayer().getStuffedInventory(), map.getPlayer());
         refresh();
     }
