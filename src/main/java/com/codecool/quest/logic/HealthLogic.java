@@ -12,6 +12,8 @@ public class HealthLogic {
     }
 
     public static void increaseLife(Player player, int health){
-        player.setHealth(player.getHealth() + health);
+        if(player.getHealth() > 0){
+            player.setHealth(player.getHealth() + health);
+        }
     }
 }
