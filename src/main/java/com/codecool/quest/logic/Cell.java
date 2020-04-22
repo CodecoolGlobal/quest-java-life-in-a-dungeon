@@ -19,6 +19,10 @@ public class Cell implements Drawable {
         this.type = type;
     }
 
+    public static Cell[] returnNeighbors(Cell cell){
+        return new Cell[]{cell.getNeighbor(0, -1), cell.getNeighbor(0, 1), cell.getNeighbor(-1, 0), cell.getNeighbor(1, 0)};
+    }
+
     public CellType getType() {
         return type;
     }
