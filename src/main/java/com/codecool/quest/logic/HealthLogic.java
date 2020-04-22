@@ -10,4 +10,7 @@ public class HealthLogic {
 
         enemy.setHealth(enemy.getHealth() - enemyDamage);
     }
+    public void increaseLife(){
+
+    }
 }
