@@ -131,11 +131,6 @@ public class Main extends Application {
 
         Fight fight = new Fight();
         fight.checkWhichKindOfFightYouFightWithEnemyIfYouHaveItemsInYourInventory(map.getPlayer());
-        // DoorOpen.checkDoors(map.getPlayer().getStuffedInventory(), map.getPlayer());
-
-
-
-        fight.standardFight(map.getPlayer());
         if (DoorOpen.checkDoors(map.getPlayer().getStuffedInventory(), map.getPlayer(), ui, keyIndex)){
             keyIndex--;
             inventoryLength--;

@@ -35,7 +35,6 @@ public class DoorOpen {
         ObservableList<Node> childrens = gridPane.getChildren();
         for (Node node : childrens) {
             if (node instanceof ImageView && gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
-                // use what you want to remove
                 gridPane.getChildren().remove(node);
                 break;
             }
@@ -53,7 +52,6 @@ public class DoorOpen {
                 element.getDoor().setHasKey(true);
                 aList.remove("key");
                 removeNodeByRowColumnIndex(5, keyIndex-1,ui);
-//                removeRowFromGridPane(5, ui );
                 element.setType(CellType.OPENDOOR);
                 return true;
             }
