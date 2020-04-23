@@ -7,7 +7,6 @@ public class HealthLogic {
 
     public static void decreaseLife(Player player, int playerDamage, Actor enemy, int enemyDamage){
         player.setHealth(player.getHealth() - playerDamage);
-
         enemy.setHealth(enemy.getHealth() - enemyDamage);
     }
 
