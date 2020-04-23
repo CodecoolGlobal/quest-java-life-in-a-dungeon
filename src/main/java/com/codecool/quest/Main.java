@@ -22,6 +22,7 @@ import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import com.codecool.quest.logic.RemoveNode;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -45,6 +46,8 @@ public class Main extends Application {
 
     Text healthLabel = new Text("");
     Integer inventoryLength = 0;
+    int shieldCount = 0;
+    int swordCount = 0;
     int swordIndex = 2;
     int shieldIndex = 2;
     int keyIndex = 2;
@@ -130,8 +133,22 @@ public class Main extends Application {
         }
 
         Fight fight = new Fight();
-        fight.checkWhichKindOfFightYouFightWithEnemyIfYouHaveItemsInYourInventory(map.getPlayer());
-        if (DoorOpen.checkDoors(map.getPlayer().getStuffedInventory(), map.getPlayer(), ui, keyIndex)){
+        boolean somethingBroke = fight.checkWhichKindOfFightYouFightWithEnemyIfYouHaveItemsInYourInventory(map.getPlayer());
+        if (somethingBroke) {
+            int countCurrentShields = 0;
+            for (String item : map.getPlayer().getStuffedInventory()){
+                if (item.equals("shield")) {
+                    countCurrentShields++;
+                }
+            }
+            if (shieldCount > countCurrentShields){
+                RemoveNode.removeNodeByRowColumnIndex(4, shieldIndex - 1, ui);
+                shieldIndex--;
+                shieldCount--;
+                inventoryLength--;
+            }
+        }
+        if (DoorOpen.checkDoors(map.getPlayer().getStuffedInventory(), map.getPlayer(), ui, keyIndex)) {
             keyIndex--;
             inventoryLength--;
         }
@@ -147,9 +164,9 @@ public class Main extends Application {
                 Cell cell = map.getCell(x, y);
                 if (cell.getActor() != null) {
                     Tiles.drawTile(context, cell.getActor(), x, y);
-                } else if (cell.getItem() != null ) {
+                } else if (cell.getItem() != null) {
                     Tiles.drawTile(context, cell.getItem(), x, y);
-                } else if (cell.getDoor() != null){
+                } else if (cell.getDoor() != null) {
                     Tiles.drawTile(context, cell.getDoor(), x, y);
                 } else {
                     Tiles.drawTile(context, cell, x, y);
@@ -158,22 +175,19 @@ public class Main extends Application {
         }
         if (inventoryLength < map.getPlayer().getStuffedInventory().size()) {
             if (map.getPlayer().getStuffedInventory().get(map.getPlayer().getStuffedInventory().size() - 1).equals("sword")) {
-                    ui.add(new ImageView(sword), swordIndex, 3);
-                    swordIndex++;
-
-            }
-            else if (map.getPlayer().getStuffedInventory().get(map.getPlayer().getStuffedInventory().size() - 1).equals("shield")) {
+                ui.add(new ImageView(sword), swordIndex, 3);
+                swordIndex++;
+                swordCount++;
+            } else if (map.getPlayer().getStuffedInventory().get(map.getPlayer().getStuffedInventory().size() - 1).equals("shield")) {
                 ui.add(new ImageView(shield), shieldIndex, 4);
                 shieldIndex++;
-
-            }
-            else if (map.getPlayer().getStuffedInventory().get(map.getPlayer().getStuffedInventory().size() - 1).equals("key")) {
+                shieldCount++;
+            } else if (map.getPlayer().getStuffedInventory().get(map.getPlayer().getStuffedInventory().size() - 1).equals("key")) {
                 ui.add(new ImageView(key), keyIndex, 5);
                 keyIndex++;
             }
-
             inventoryLength = map.getPlayer().getStuffedInventory().size();
-            }
+        }
         healthLabel.setText("" + map.getPlayer().getHealth());
     }
 }
