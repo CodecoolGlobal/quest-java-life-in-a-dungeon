@@ -15,7 +15,7 @@ public class Fight {
         for (Cell element : arrayCell) {
             if (element.getActor() != null && element.getActor().getHealth() > 0 && player.getHealth() > 0) {
                 if (inventory.contains("sword") && !inventory.contains("shield")) {
-                    specialFight(player, element, 2, 10);
+                    specialFight(player, element, 3, 10);
                 } else if (inventory.contains("sword") && inventory.contains("shield")) {
                     specialFightWithShield(player, element, 10, inventory);
                     return true;
@@ -23,7 +23,7 @@ public class Fight {
                     specialFightWithShield(player, element, 5, inventory);
                     return true;
                 } else {
-                    specialFight(player, element, 2, 5);
+                    specialFight(player, element, 3, 5);
                 }
             }
         }
