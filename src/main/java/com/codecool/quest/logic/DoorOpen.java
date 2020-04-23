@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import com.codecool.quest.logic.RemoveNode;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -30,16 +31,6 @@ public class DoorOpen {
 //        return gridPane;
 //    }
 
-    public static void removeNodeByRowColumnIndex(final int row,final int column,GridPane gridPane) {
-
-        ObservableList<Node> childrens = gridPane.getChildren();
-        for (Node node : childrens) {
-            if (node instanceof ImageView && gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
-                gridPane.getChildren().remove(node);
-                break;
-            }
-        }
-    }
 
     public static boolean checkDoors(ArrayList aList, Player player, GridPane ui, int keyIndex) {
         Cell cell = player.getCell();
@@ -51,7 +42,7 @@ public class DoorOpen {
             if (element.getTileName().equals("closedDoor") && aList.contains("key")) {
                 element.getDoor().setHasKey(true);
                 aList.remove("key");
-                removeNodeByRowColumnIndex(5, keyIndex-1,ui);
+                RemoveNode.removeNodeByRowColumnIndex(5, keyIndex-1,ui);
                 element.setType(CellType.OPENDOOR);
                 return true;
             }
