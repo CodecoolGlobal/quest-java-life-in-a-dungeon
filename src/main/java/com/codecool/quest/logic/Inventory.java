@@ -1,13 +1,16 @@
 package com.codecool.quest.logic;
 
+import com.codecool.quest.logic.items.Item;
+
 import java.util.ArrayList;
 
 public class Inventory {
     
-    ArrayList<String> inventory = new ArrayList<>();
+    ArrayList<Item> inventory = new ArrayList<>();
 
-    public ArrayList<String> getInventory(){
+    public ArrayList<Item> getInventory(){
         return inventory;
     }
+
 
 }
