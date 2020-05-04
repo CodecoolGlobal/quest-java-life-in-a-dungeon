@@ -37,11 +37,22 @@ public class Tiles {
         tileMap.put("openDoor", new Tile(6, 9));
         tileMap.put("key", new Tile(16,23));
         tileMap.put("exitDoor", new Tile(1, 9));
+        tileMap.put("tree", new Tile(0, 1));
+        tileMap.put("grass", new Tile(0, 2));
+
     }
 
     public static void drawTile(GraphicsContext context, Drawable d, int x, int y) {
         Tile tile = tileMap.get(d.getTileName());
         context.drawImage(tileset, tile.x, tile.y, tile.w, tile.h,
                 x * TILE_WIDTH, y * TILE_WIDTH, TILE_WIDTH, TILE_WIDTH);
+    }
+
+    public static Map<String, Tile> getTileMap() {
+        return tileMap;
+    }
+
+    public static Image getImage() {
+        return tileset;
     }
 }
