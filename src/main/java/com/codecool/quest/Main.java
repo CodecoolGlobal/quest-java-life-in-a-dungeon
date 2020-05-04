@@ -63,27 +63,35 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
+        ui.setStyle("-fx-background-color: #472D3B");
+
         Text health = new Text("Health:");
         health.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        health.setFill(Color.ANTIQUEWHITE);
         ui.add(health, 0, 0);
 
-        healthLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
-        ui.add(healthLabel, 1, 0);
+        healthLabel.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+        healthLabel.setFill(Color.ANTIQUEWHITE);
+        ui.add(healthLabel, 2, 0);
 
         Text inventory = new Text("Inventory:");
         inventory.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+        inventory.setFill(Color.ANTIQUEWHITE);
         ui.add(inventory, 0, 1);
 
         Text swords = new Text("Swords:");
         swords.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        swords.setFill(Color.ANTIQUEWHITE);
         ui.add(swords, 0, 3);
 
         Text shields = new Text("Shields:");
         shields.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        shields.setFill(Color.ANTIQUEWHITE);
         ui.add(shields, 0, 4);
 
         Text keys = new Text("Keys:");
         keys.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        keys.setFill(Color.ANTIQUEWHITE);
         ui.add(keys, 0, 5);
 
         ui.getColumnConstraints().add(new ColumnConstraints(80));
