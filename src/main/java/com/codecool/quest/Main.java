@@ -2,13 +2,9 @@ package com.codecool.quest;
 
 import com.codecool.quest.logic.*;
 import javafx.application.Application;
-import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -18,7 +14,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -26,11 +21,12 @@ import com.codecool.quest.logic.RemoveNode;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
 
 public class Main extends Application {
-    GameMap map = MapLoader.loadMap();
+    GameMap map = MapLoader.loadMap("map.txt");
+    
+
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
@@ -58,7 +54,6 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -113,6 +108,7 @@ public class Main extends Application {
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
+        System.out.println(MapLoader.getMapName());
         switch (keyEvent.getCode()) {
             case UP:
                 map.getPlayer().move(0, -1);
@@ -136,17 +132,21 @@ public class Main extends Application {
         boolean somethingBroke = fight.checkWhichKindOfFightYouFightWithEnemyIfYouHaveItemsInYourInventory(map.getPlayer());
         if (somethingBroke) {
             int countCurrentShields = 0;
-            for (String item : map.getPlayer().getStuffedInventory()){
+            for (String item : map.getPlayer().getStuffedInventory()) {
                 if (item.equals("shield")) {
                     countCurrentShields++;
                 }
             }
-            if (shieldCount > countCurrentShields){
+            if (shieldCount > countCurrentShields) {
                 RemoveNode.removeNodeByRowColumnIndex(4, shieldIndex - 1, ui);
                 shieldIndex--;
                 shieldCount--;
                 inventoryLength--;
             }
+        }
+        Cell cell = map.getPlayer().getCell();
+        if(cell.getTileName().equals("exitDoor")) {
+            changeMapAndKeepInventory();
         }
         if (DoorOpen.checkDoors(map.getPlayer().getStuffedInventory(), map.getPlayer(), ui, keyIndex)) {
             keyIndex--;
@@ -189,5 +189,21 @@ public class Main extends Application {
             inventoryLength = map.getPlayer().getStuffedInventory().size();
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
+    }
+
+    public void changeMapAndKeepInventory() {
+        ArrayList<String> oldInv = map.getPlayer().getStuffedInventory();
+        int oldHealth = map.getPlayer().getHealth();
+        //map = MapLoader.loadMap("map1.txt");
+        if (MapLoader.getMapName().equals("map.txt")) {
+            map = MapLoader.loadMap("map1.txt");
+        }else if (MapLoader.getMapName().equals("map1.txt")) {
+            map = MapLoader.loadMap("map.txt");
+        }
+
+        for (String item : oldInv){
+            map.getPlayer().getStuffedInventory().add(item);
+        }
+        map.getPlayer().setHealth(oldHealth);
     }
 }
