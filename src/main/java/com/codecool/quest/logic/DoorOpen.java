@@ -34,9 +34,6 @@ public class DoorOpen {
 
     public static boolean checkDoors(ArrayList aList, Player player, GridPane ui, int keyIndex) {
         Cell cell = player.getCell();
-        if(cell.getTileName().equals("exitDoor")) {
-            EndGame.display("Congratulations!");
-        }
         Cell[] arrayCell = {cell.getNeighbor(0, -1), cell.getNeighbor(0, 1), cell.getNeighbor(-1, 0), cell.getNeighbor(1, 0)};
         for (Cell element : arrayCell) {
             if (element.getTileName().equals("closedDoor") && aList.contains("key")) {
