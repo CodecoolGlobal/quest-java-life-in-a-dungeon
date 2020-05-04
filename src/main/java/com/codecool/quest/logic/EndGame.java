@@ -20,7 +20,7 @@ public class EndGame {
 
             Button button1 = new Button("Yes");
             Button button2 = new Button("No");
-            button1.setOnAction(e -> MapLoader.loadMap());
+            //button1.setOnAction(e -> MapLoader.loadMap());
             button2.setOnAction(e -> System.exit(0));
 
             VBox layout= new VBox(10);
