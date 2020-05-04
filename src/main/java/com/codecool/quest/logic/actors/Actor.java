@@ -1,6 +1,7 @@
 package com.codecool.quest.logic.actors;
 
 import com.codecool.quest.logic.*;
+import com.codecool.quest.logic.items.Item;
 
 import java.util.ArrayList;
 
@@ -29,7 +30,7 @@ public abstract class Actor implements Drawable {
                 cell = nextCell;
             } else if (!nextCell.getTileName().matches("wall|empty|closedDoor") && (nextCell.getActor() == null || !nextCell.getActor().getTileName().matches("skeleton"))) {
                 if (nextCell.getItem() != null) {
-                    inventory.getInventory().add(nextCell.getItem().getTileName());
+                    inventory.getInventory().add(nextCell.getItem());
                     cell.setActor(null);
                     nextCell.setItem(null);
                     nextCell.setActor(this);
@@ -46,7 +47,7 @@ public abstract class Actor implements Drawable {
         }
     }
 
-    public ArrayList<String> getStuffedInventory() {
+    public ArrayList<Item> getStuffedInventory() {
         return inventory.getInventory();
     }
 
