@@ -39,9 +39,6 @@ public class DoorOpen {
         for (Item items : ItemList) {
             aList.add(items.getTileName());
         }
-        if (cell.getTileName().equals("exitDoor")) {
-            EndGame.display("Congratulations!");
-        }
         Cell[] arrayCell = {cell.getNeighbor(0, -1), cell.getNeighbor(0, 1), cell.getNeighbor(-1, 0), cell.getNeighbor(1, 0)};
         for (Cell element : arrayCell) {
             if (element.getTileName().equals("closedDoor") && aList.contains("key")) {
@@ -56,5 +53,3 @@ public class DoorOpen {
         return false;
     }
 }
-
-
