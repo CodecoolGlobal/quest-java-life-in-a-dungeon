@@ -9,9 +9,9 @@ public class RemoveNode {
 
     public static void removeNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
 
-        ObservableList<Node> childrens = gridPane.getChildren();
-        for (Node node : childrens) {
-            if (node instanceof ImageView && gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
+        ObservableList<Node> children = gridPane.getChildren();
+        for (Node node : children) {
+            if (gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
                 gridPane.getChildren().remove(node);
                 break;
             }
