@@ -1,6 +1,7 @@
 package com.codecool.quest;
 
 import com.codecool.quest.logic.*;
+import com.codecool.quest.logic.items.Item;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -36,6 +37,8 @@ public class Main extends Application {
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
 
+
+
     FileInputStream imageStream = new FileInputStream("./src/main/resources/sword.png");
     Image sword = new Image(imageStream, 30, 30, false, false);
     FileInputStream imageStream2 = new FileInputStream("./src/main/resources/shield.png");
@@ -62,6 +65,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+//        ui.add(newCanvas, 0,6);
+//        GraphicsContext newContext = newCanvas.getGraphicsContext2D();
+//        newContext.drawImage(Tiles.tileset, 1*34, 31*34, 32, 32,1,1, 32,32);
 
         Text health = new Text("Health:");
         health.setFont(Font.font("Arial", FontWeight.BOLD, 20));
@@ -100,7 +107,7 @@ public class Main extends Application {
 
         BorderPane borderPane = new BorderPane();
         borderPane.setCenter(canvas);
-        borderPane.setRight(ui);
+        borderPane.setLeft(ui);
 
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
@@ -110,6 +117,23 @@ public class Main extends Application {
         primaryStage.setTitle("Codecool Quest");
         primaryStage.show();
 
+    }
+
+    public static void drawItems(GraphicsContext newContext,String item) {
+        Tiles.Tile tile = (Tiles.Tile) Tiles.getTileMap().get(item);
+        newContext.drawImage(Tiles.getImage(), tile.x,tile.y, 32, 32, 1,1,32,32);
+    }
+
+
+    public static void drawItem2(GraphicsContext newContext, String item) {
+        Tiles.Tile tile = (Tiles.Tile) Tiles.getTileMap().get(item);
+        newContext.drawImage(Tiles.getImage(), tile.x, tile.y, tile.w, tile.h,1,1,32,32);
+    }
+
+    public void makeCanvas(Canvas newName, String item, int row, int index) {
+        newName = new Canvas(Tiles.TILE_WIDTH, Tiles.TILE_WIDTH);
+        ui.add(newName, index, row);
+        drawItems(newName.getGraphicsContext2D(), item);
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
@@ -136,8 +160,8 @@ public class Main extends Application {
         boolean somethingBroke = fight.checkWhichKindOfFightYouFightWithEnemyIfYouHaveItemsInYourInventory(map.getPlayer());
         if (somethingBroke) {
             int countCurrentShields = 0;
-            for (String item : map.getPlayer().getStuffedInventory()){
-                if (item.equals("shield")) {
+            for (Item item : map.getPlayer().getStuffedInventory()){
+                if (item.getTileName().equals("shield")) {
                     countCurrentShields++;
                 }
             }
@@ -159,31 +183,41 @@ public class Main extends Application {
     private void refresh() {
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        for (int x = 0; x < map.getWidth(); x++) {
-            for (int y = 0; y < map.getHeight(); y++) {
+        int playerXPos = map.getPlayer().getX();
+        int playerYPos = map.getPlayer().getY();
+        int canvasYPos;
+        int canvasXPos = 5;
+        for (int x = playerXPos - 8; x < playerXPos + 8; x++) {
+            canvasYPos = 5;
+            canvasXPos++;
+            for (int y = playerYPos - 8 ; y < playerYPos + 8; y++) {
+                canvasYPos++;
                 Cell cell = map.getCell(x, y);
                 if (cell.getActor() != null) {
-                    Tiles.drawTile(context, cell.getActor(), x, y);
+                    Tiles.drawTile(context, cell.getActor(), canvasXPos, canvasYPos);
                 } else if (cell.getItem() != null) {
-                    Tiles.drawTile(context, cell.getItem(), x, y);
+                    Tiles.drawTile(context, cell.getItem(), canvasXPos, canvasYPos);
                 } else if (cell.getDoor() != null) {
-                    Tiles.drawTile(context, cell.getDoor(), x, y);
+                    Tiles.drawTile(context, cell.getDoor(), canvasXPos, canvasYPos);
                 } else {
-                    Tiles.drawTile(context, cell, x, y);
+                    Tiles.drawTile(context, cell, canvasXPos, canvasYPos);
                 }
             }
         }
         if (inventoryLength < map.getPlayer().getStuffedInventory().size()) {
-            if (map.getPlayer().getStuffedInventory().get(map.getPlayer().getStuffedInventory().size() - 1).equals("sword")) {
-                ui.add(new ImageView(sword), swordIndex, 3);
+            if (map.getPlayer().getStuffedInventory().get(map.getPlayer().getStuffedInventory().size() - 1).getTileName().equals("sword")) {
+                Canvas swordCanvas = new Canvas();
+                makeCanvas(swordCanvas, "sword", 3, swordIndex);
                 swordIndex++;
                 swordCount++;
-            } else if (map.getPlayer().getStuffedInventory().get(map.getPlayer().getStuffedInventory().size() - 1).equals("shield")) {
-                ui.add(new ImageView(shield), shieldIndex, 4);
+            } else if (map.getPlayer().getStuffedInventory().get(map.getPlayer().getStuffedInventory().size() - 1).getTileName().equals("shield")) {
+                Canvas shieldCanvas = new Canvas();
+                makeCanvas(shieldCanvas, "shield", 4 , shieldIndex);
                 shieldIndex++;
                 shieldCount++;
-            } else if (map.getPlayer().getStuffedInventory().get(map.getPlayer().getStuffedInventory().size() - 1).equals("key")) {
-                ui.add(new ImageView(key), keyIndex, 5);
+            } else if (map.getPlayer().getStuffedInventory().get(map.getPlayer().getStuffedInventory().size() - 1).getTileName().equals("key")) {
+                Canvas keyCanvas = new Canvas();
+                makeCanvas(keyCanvas, "key", 5, keyIndex);
                 keyIndex++;
             }
             inventoryLength = map.getPlayer().getStuffedInventory().size();
