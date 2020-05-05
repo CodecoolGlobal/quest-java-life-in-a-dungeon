@@ -219,6 +219,8 @@ public class Main extends Application {
                 Canvas keyCanvas = new Canvas();
                 makeCanvas(keyCanvas, "key", 5, keyIndex);
                 keyIndex++;
+                String musicPath = "/home/bocz/Codecool/OOP_with_Java/TW_week/Codecool quest/quest-java-life-in-a-dungeon/src/main/resources/Look at my horse + lyrics [HD] (online-audio-converter.com).wav";
+                playAudio.playMusic(musicPath);
             }
             inventoryLength = map.getPlayer().getStuffedInventory().size();
         }
