@@ -7,12 +7,9 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.text.Text;
@@ -43,6 +40,7 @@ public class Main extends Application {
     Image key = new Image(imageStream1, 35, 20, false, false);
     GridPane ui = new GridPane();
 
+    Text nameLabel = new Text("Name: ");
     Text healthLabel = new Text("");
     Integer inventoryLength = 0;
     int shieldCount = 0;
@@ -65,16 +63,24 @@ public class Main extends Application {
 //        GraphicsContext newContext = newCanvas.getGraphicsContext2D();
 //        newContext.drawImage(Tiles.tileset, 1*34, 31*34, 32, 32,1,1, 32,32);
 
+        NameCharacter.display(map);
         Text health = new Text("Health:");
         health.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-        ui.add(health, 0, 0);
+        ui.add(health, 0, 1);
+
+        nameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        ui.add(nameLabel, 0, 0);
+
+        Text name = new Text("");
+        name.setText(map.getPlayer().getName());
+        ui.add(name, 1, 0);
 
         healthLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
-        ui.add(healthLabel, 1, 0);
+        ui.add(healthLabel, 1, 1);
 
         Text inventory = new Text("Inventory:");
         inventory.setFont(Font.font("Arial", FontWeight.BOLD, 18));
-        ui.add(inventory, 0, 1);
+        ui.add(inventory, 0, 2);
 
         Text swords = new Text("Swords:");
         swords.setFont(Font.font("Arial", FontWeight.BOLD, 15));
@@ -220,7 +226,7 @@ public class Main extends Application {
                 makeCanvas(keyCanvas, "key", 5, keyIndex);
                 keyIndex++;
                 String musicPath = "src/main/resources/look_at_my_horse.wav";
-                playAudio.playMusic(musicPath);
+                /*playAudio.playMusic(musicPath);*/
             }
             inventoryLength = map.getPlayer().getStuffedInventory().size();
         }
