@@ -1,32 +1,37 @@
 package com.codecool.quest.logic;
 
+import com.codecool.quest.Main;
 import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
+import jdk.jfr.Event;
+
+import java.util.Map;
 
 
-public class EndGame {
+public class NameCharacter {
 
 
-        public static void display(String text) {
+        public static void display(GameMap map) {
             Stage popUpWindow = new Stage();
 
             popUpWindow.initModality(Modality.APPLICATION_MODAL);
             popUpWindow.setTitle("Codecool Quest");
 
-            Label label1= new Label(text + " Another game?");
+            Label label1 = new Label("Give a name:");
+            TextField textF = new TextField();
+            /*TilePane tilePane = new TilePane();
+            Event event = new Event();*/
 
-            Button button1 = new Button("Yes");
-            Button button2 = new Button("No");
-            //button1.setOnAction(e -> MapLoader.loadMap());
-            button2.setOnAction(e -> System.exit(0));
+            Button button1 = new Button("Save");
+            button1.setOnAction(e -> map.getPlayer().setName(textF.getText()));
 
             VBox layout= new VBox(10);
 
 
-            layout.getChildren().addAll(label1, button1, button2);
+            layout.getChildren().addAll(label1, textF, button1);
 
             layout.setAlignment(Pos.CENTER);
 
