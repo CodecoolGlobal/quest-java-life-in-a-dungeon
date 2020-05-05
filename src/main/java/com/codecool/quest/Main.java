@@ -224,10 +224,9 @@ public class Main extends Application {
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
     }
-}
 
     public void changeMapAndKeepInventory() {
-        ArrayList<String> oldInv = map.getPlayer().getStuffedInventory();
+        ArrayList<Item> oldInv = map.getPlayer().getStuffedInventory();
         int oldHealth = map.getPlayer().getHealth();
         //map = MapLoader.loadMap("map1.txt");
         if (MapLoader.getMapName().equals("map.txt")) {
@@ -236,7 +235,7 @@ public class Main extends Application {
             map = MapLoader.loadMap("map.txt");
         }
 
-        for (String item : oldInv){
+        for (Item item : oldInv){
             map.getPlayer().getStuffedInventory().add(item);
         }
         map.getPlayer().setHealth(oldHealth);
