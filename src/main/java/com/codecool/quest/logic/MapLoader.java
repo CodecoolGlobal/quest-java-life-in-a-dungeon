@@ -1,11 +1,7 @@
 package com.codecool.quest.logic;
 
-import com.codecool.quest.logic.actors.Player;
-import com.codecool.quest.logic.actors.Skeleton;
-import com.codecool.quest.logic.items.Door;
-import com.codecool.quest.logic.items.Key;
-import com.codecool.quest.logic.items.Shield;
-import com.codecool.quest.logic.items.Sword;
+import com.codecool.quest.logic.actors.*;
+import com.codecool.quest.logic.items.*;
 
 import java.io.InputStream;
 import java.util.Scanner;
@@ -49,7 +45,19 @@ public class MapLoader {
                             break;
                         case 's':
                             cell.setType(CellType.FLOOR);
-                            new Skeleton(cell);
+                            map.setSkeleton(new Skeleton(cell));
+                            break;
+                        case 'b':
+                            cell.setType(CellType.FLOOR);
+                            map.setGolem(new Golem(cell));
+                            break;
+                        case 'p':
+                            cell.setType(CellType.FLOOR);
+                            map.setSpider(new Spider(cell));
+                            break;
+                        case 'h':
+                            cell.setType(CellType.SPIDERWEB);
+                            new SpiderWeb(cell);
                             break;
                         case '@':
                             cell.setType(CellType.FLOOR);
