@@ -21,15 +21,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+
 public class Main extends Application {
     GameMap map = MapLoader.loadMap("map.txt");
-
 
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
-
 
 
     FileInputStream imageStream = new FileInputStream("./src/main/resources/sword.png");
@@ -120,15 +119,15 @@ public class Main extends Application {
 
     }
 
-    public static void drawItems(GraphicsContext newContext,String item) {
+    public static void drawItems(GraphicsContext newContext, String item) {
         Tiles.Tile tile = (Tiles.Tile) Tiles.getTileMap().get(item);
-        newContext.drawImage(Tiles.getImage(), tile.x,tile.y, 32, 32, 1,1,32,32);
+        newContext.drawImage(Tiles.getImage(), tile.x, tile.y, 32, 32, 1, 1, 32, 32);
     }
 
 
     public static void drawItem2(GraphicsContext newContext, String item) {
         Tiles.Tile tile = (Tiles.Tile) Tiles.getTileMap().get(item);
-        newContext.drawImage(Tiles.getImage(), tile.x, tile.y, tile.w, tile.h,1,1,32,32);
+        newContext.drawImage(Tiles.getImage(), tile.x, tile.y, tile.w, tile.h, 1, 1, 32, 32);
     }
 
     public void makeCanvas(Canvas newName, String item, int row, int index) {
@@ -141,19 +140,19 @@ public class Main extends Application {
         System.out.println(MapLoader.getMapName());
         switch (keyEvent.getCode()) {
             case UP:
-                map.getPlayer().move(0, -1);
+                map.getPlayer().move(0, -1, map);
                 refresh();
                 break;
             case DOWN:
-                map.getPlayer().move(0, 1);
+                map.getPlayer().move(0, 1, map);
                 refresh();
                 break;
             case LEFT:
-                map.getPlayer().move(-1, 0);
+                map.getPlayer().move(-1, 0, map);
                 refresh();
                 break;
             case RIGHT:
-                map.getPlayer().move(1, 0);
+                map.getPlayer().move(1, 0, map);
                 refresh();
                 break;
         }
@@ -162,7 +161,7 @@ public class Main extends Application {
         boolean somethingBroke = fight.checkWhichKindOfFightYouFightWithEnemyIfYouHaveItemsInYourInventory(map.getPlayer());
         if (somethingBroke) {
             int countCurrentShields = 0;
-            for (Item item : map.getPlayer().getStuffedInventory()){
+            for (Item item : map.getPlayer().getStuffedInventory()) {
                 if (item.getTileName().equals("shield")) {
                     countCurrentShields++;
                 }
@@ -175,7 +174,7 @@ public class Main extends Application {
             }
         }
         Cell cell = map.getPlayer().getCell();
-        if(cell.getTileName().equals("exitDoor")) {
+        if (cell.getTileName().equals("exitDoor")) {
             changeMapAndKeepInventory();
         }
         if (DoorOpen.checkDoors(map.getPlayer().getStuffedInventory(), map.getPlayer(), ui, keyIndex)) {
@@ -191,42 +190,69 @@ public class Main extends Application {
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         int playerXPos = map.getPlayer().getX();
         int playerYPos = map.getPlayer().getY();
-        int canvasYPos;
-        int canvasXPos = 5;
-        for (int x = playerXPos - 8; x < playerXPos + 8; x++) {
-            canvasYPos = 5;
-            canvasXPos++;
-            for (int y = playerYPos - 8 ; y < playerYPos + 8; y++) {
-                canvasYPos++;
+        int horizontalStartPos = -1; // Starting position of playing screen, in a horizontal way from left.
+        int leftFromPlayer = 20;
+        int rightFromPlayer = 20;
+        int topFromPlayer = 12;
+        int bottomFromPlayer = 12;
+
+        // When player goes to the left side of the screen, you will see fewer images.
+        if (playerXPos - 21 <= horizontalStartPos) {
+            leftFromPlayer = playerXPos - 1;
+            rightFromPlayer = playerXPos + 20 + (22 - leftFromPlayer);
+        }
+
+
+        for (int x = playerXPos - leftFromPlayer; x < playerXPos + rightFromPlayer; x++) {
+            int verticalStartPos = -1; // Starting position of playing screen, in a vertical way from top.
+            if (horizontalStartPos < 76){
+                horizontalStartPos++;
+            }
+
+            // When player goes to the top side of the screen, you will see ewer images.
+            if (playerYPos - 12 <= verticalStartPos) {
+                topFromPlayer = playerYPos - 1;
+                bottomFromPlayer = playerYPos + 12 + (12 - topFromPlayer);
+            } else if (playerYPos + 12 >= verticalStartPos + map.getHeight()) {
+                bottomFromPlayer = map.getHeight() - playerYPos;
+                /*topFromPlayer--;*/
+            }
+
+            for (int y = playerYPos - topFromPlayer; y < playerYPos + bottomFromPlayer; y++) {
+                verticalStartPos++;
                 Cell cell = map.getCell(x, y);
                 if (cell.getActor() != null) {
-                    Tiles.drawTile(context, cell.getActor(), canvasXPos, canvasYPos);
+                    Tiles.drawTile(context, cell.getActor(), horizontalStartPos, verticalStartPos);
                 } else if (cell.getItem() != null) {
-                    Tiles.drawTile(context, cell.getItem(), canvasXPos, canvasYPos);
+                    Tiles.drawTile(context, cell.getItem(), horizontalStartPos, verticalStartPos);
                 } else if (cell.getDoor() != null) {
-                    Tiles.drawTile(context, cell.getDoor(), canvasXPos, canvasYPos);
+                    Tiles.drawTile(context, cell.getDoor(), horizontalStartPos, verticalStartPos);
                 } else {
-                    Tiles.drawTile(context, cell, canvasXPos, canvasYPos);
+                    Tiles.drawTile(context, cell, horizontalStartPos, verticalStartPos);
                 }
             }
         }
         if (inventoryLength < map.getPlayer().getStuffedInventory().size()) {
-            if (map.getPlayer().getStuffedInventory().get(map.getPlayer().getStuffedInventory().size() - 1).getTileName().equals("sword")) {
-                Canvas swordCanvas = new Canvas();
-                makeCanvas(swordCanvas, "sword", 3, swordIndex);
-                swordIndex++;
-                swordCount++;
-            } else if (map.getPlayer().getStuffedInventory().get(map.getPlayer().getStuffedInventory().size() - 1).getTileName().equals("shield")) {
-                Canvas shieldCanvas = new Canvas();
-                makeCanvas(shieldCanvas, "shield", 4 , shieldIndex);
-                shieldIndex++;
-                shieldCount++;
-            } else if (map.getPlayer().getStuffedInventory().get(map.getPlayer().getStuffedInventory().size() - 1).getTileName().equals("key")) {
-                Canvas keyCanvas = new Canvas();
-                makeCanvas(keyCanvas, "key", 5, keyIndex);
-                keyIndex++;
-                String musicPath = "src/main/resources/look_at_my_horse.wav";
-                /*playAudio.playMusic(musicPath);*/
+            switch (map.getPlayer().getStuffedInventory().get(map.getPlayer().getStuffedInventory().size() - 1).getTileName()) {
+                case "sword":
+                    Canvas swordCanvas = new Canvas();
+                    makeCanvas(swordCanvas, "sword", 3, swordIndex);
+                    swordIndex++;
+                    swordCount++;
+                    break;
+                case "shield":
+                    Canvas shieldCanvas = new Canvas();
+                    makeCanvas(shieldCanvas, "shield", 4, shieldIndex);
+                    shieldIndex++;
+                    shieldCount++;
+                    break;
+                case "key":
+                    Canvas keyCanvas = new Canvas();
+                    makeCanvas(keyCanvas, "key", 5, keyIndex);
+                    keyIndex++;
+                    String musicPath = "src/main/resources/look_at_my_horse.wav";
+                    /*playAudio.playMusic(musicPath);*/
+                    break;
             }
             inventoryLength = map.getPlayer().getStuffedInventory().size();
         }
@@ -239,11 +265,11 @@ public class Main extends Application {
         //map = MapLoader.loadMap("map1.txt");
         if (MapLoader.getMapName().equals("map.txt")) {
             map = MapLoader.loadMap("map1.txt");
-        }else if (MapLoader.getMapName().equals("map1.txt")) {
+        } else if (MapLoader.getMapName().equals("map1.txt")) {
             map = MapLoader.loadMap("map.txt");
         }
 
-        for (Item item : oldInv){
+        for (Item item : oldInv) {
             map.getPlayer().getStuffedInventory().add(item);
         }
         map.getPlayer().setHealth(oldHealth);
