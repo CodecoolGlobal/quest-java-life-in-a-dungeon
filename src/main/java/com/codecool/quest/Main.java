@@ -1,13 +1,14 @@
 package com.codecool.quest;
 
 import com.codecool.quest.logic.*;
+import com.codecool.quest.logic.actors.Skeleton;
+import com.codecool.quest.logic.actors.Spider;
 import com.codecool.quest.logic.items.Item;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -23,6 +24,9 @@ import com.codecool.quest.logic.RemoveNode;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 public class Main extends Application {
     GameMap map = MapLoader.loadMap("map.txt");
@@ -32,7 +36,6 @@ public class Main extends Application {
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
-
 
 
     FileInputStream imageStream = new FileInputStream("./src/main/resources/sword.png");
@@ -112,17 +115,20 @@ public class Main extends Application {
         primaryStage.setTitle("Codecool Quest");
         primaryStage.show();
 
+        createSkeletonTimers();
+        createSpiderTimers();
+        refreshTimer();
     }
 
-    public static void drawItems(GraphicsContext newContext,String item) {
+    public static void drawItems(GraphicsContext newContext, String item) {
         Tiles.Tile tile = (Tiles.Tile) Tiles.getTileMap().get(item);
-        newContext.drawImage(Tiles.getImage(), tile.x,tile.y, 32, 32, 1,1,32,32);
+        newContext.drawImage(Tiles.getImage(), tile.x, tile.y, 32, 32, 1, 1, 32, 32);
     }
 
 
     public static void drawItem2(GraphicsContext newContext, String item) {
         Tiles.Tile tile = (Tiles.Tile) Tiles.getTileMap().get(item);
-        newContext.drawImage(Tiles.getImage(), tile.x, tile.y, tile.w, tile.h,1,1,32,32);
+        newContext.drawImage(Tiles.getImage(), tile.x, tile.y, tile.w, tile.h, 1, 1, 32, 32);
     }
 
     public void makeCanvas(Canvas newName, String item, int row, int index) {
@@ -132,7 +138,6 @@ public class Main extends Application {
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
-        System.out.println(MapLoader.getMapName());
         switch (keyEvent.getCode()) {
             case UP:
                 map.getPlayer().move(0, -1);
@@ -154,9 +159,11 @@ public class Main extends Application {
 
         Fight fight = new Fight();
         boolean somethingBroke = fight.checkWhichKindOfFightYouFightWithEnemyIfYouHaveItemsInYourInventory(map.getPlayer());
+        //ArrayList<Skeleton> skeletons = map.returnSkeletons();
+        //for (Skeleton skeleton : skeletons){ fight.monsterAttack(skeleton, map.getPlayer());}
         if (somethingBroke) {
             int countCurrentShields = 0;
-            for (Item item : map.getPlayer().getStuffedInventory()){
+            for (Item item : map.getPlayer().getStuffedInventory()) {
                 if (item.getTileName().equals("shield")) {
                     countCurrentShields++;
                 }
@@ -169,7 +176,7 @@ public class Main extends Application {
             }
         }
         Cell cell = map.getPlayer().getCell();
-        if(cell.getTileName().equals("exitDoor")) {
+        if (cell.getTileName().equals("exitDoor")) {
             changeMapAndKeepInventory();
         }
         if (DoorOpen.checkDoors(map.getPlayer().getStuffedInventory(), map.getPlayer(), ui, keyIndex)) {
@@ -190,7 +197,7 @@ public class Main extends Application {
         for (int x = playerXPos - 8; x < playerXPos + 8; x++) {
             canvasYPos = 5;
             canvasXPos++;
-            for (int y = playerYPos - 8 ; y < playerYPos + 8; y++) {
+            for (int y = playerYPos - 8; y < playerYPos + 8; y++) {
                 canvasYPos++;
                 Cell cell = map.getCell(x, y);
                 if (cell.getActor() != null) {
@@ -210,16 +217,17 @@ public class Main extends Application {
                 makeCanvas(swordCanvas, "sword", 3, swordIndex);
                 swordIndex++;
                 swordCount++;
+                map.getPlayer().setAttackDamage(10);
             } else if (map.getPlayer().getStuffedInventory().get(map.getPlayer().getStuffedInventory().size() - 1).getTileName().equals("shield")) {
                 Canvas shieldCanvas = new Canvas();
-                makeCanvas(shieldCanvas, "shield", 4 , shieldIndex);
+                makeCanvas(shieldCanvas, "shield", 4, shieldIndex);
                 shieldIndex++;
                 shieldCount++;
             } else if (map.getPlayer().getStuffedInventory().get(map.getPlayer().getStuffedInventory().size() - 1).getTileName().equals("key")) {
                 Canvas keyCanvas = new Canvas();
                 makeCanvas(keyCanvas, "key", 5, keyIndex);
                 keyIndex++;
-                String musicPath = "src/main/resources/look_at_my_horse.wav";
+                String musicPath = "srcs/main/resources/look_at_my_horse.wav";
                 playAudio.playMusic(musicPath);
             }
             inventoryLength = map.getPlayer().getStuffedInventory().size();
@@ -230,16 +238,78 @@ public class Main extends Application {
     public void changeMapAndKeepInventory() {
         ArrayList<Item> oldInv = map.getPlayer().getStuffedInventory();
         int oldHealth = map.getPlayer().getHealth();
-        //map = MapLoader.loadMap("map1.txt");
         if (MapLoader.getMapName().equals("map.txt")) {
             map = MapLoader.loadMap("map1.txt");
-        }else if (MapLoader.getMapName().equals("map1.txt")) {
+        } else if (MapLoader.getMapName().equals("map1.txt")) {
             map = MapLoader.loadMap("map.txt");
         }
 
-        for (Item item : oldInv){
+        for (Item item : oldInv) {
             map.getPlayer().getStuffedInventory().add(item);
         }
         map.getPlayer().setHealth(oldHealth);
+        createSpiderTimers();
+        createSkeletonTimers();
+    }
+
+    private void createSpiderTimers() {
+        ArrayList<Spider> spiders = map.returnSpiders();
+        for (Spider spider : spiders) {
+            createTimerForASpider(spider);
+        }
+    }
+
+    private void createTimerForASpider(Spider spider){
+
+        Timer spiderTimer = new Timer();
+        TimerTask spiderTimerTask = new TimerTask() {
+
+            @Override
+            public void run() {
+                if (spider.getTileName().equals("deathSkeleton")) {
+                    spiderTimer.cancel();
+                }else {
+                    spider.moveRandomly();
+                }
+            }
+        };
+        spiderTimer.schedule(spiderTimerTask, 0, 2000);
+    }
+
+    private void createSkeletonTimers() {
+        ArrayList<Skeleton> skeletons = map.returnSkeletons();
+        for (Skeleton skeleton : skeletons) {
+            createTimerForASkeleton(skeleton);
+        }
+    }
+
+    private void createTimerForASkeleton(Skeleton skeleton){
+
+        Timer skeletonTimer = new Timer();
+        Fight skeletonFight = new Fight();
+        TimerTask skeletonTimerTask = new TimerTask() {
+
+            @Override
+            public void run() {
+                if (skeleton.getTileName().equals("deathSkeleton")) {
+                    skeletonTimer.cancel();
+                }else {
+                    skeleton.moveRandomly();
+                    skeletonFight.monsterAttack(skeleton, map.getPlayer());
+                }
+            }
+        };
+        skeletonTimer.schedule(skeletonTimerTask, 0, 600);
+    }
+
+    private void refreshTimer(){
+        Timer refreshTimer = new Timer();
+        TimerTask refreshTimerTask = new TimerTask(){
+            @Override
+            public void run(){
+                refresh();
+            }
+        };
+        refreshTimer.schedule(refreshTimerTask, 0, 400);
     }
 }
