@@ -4,10 +4,13 @@ import com.codecool.quest.logic.*;
 import com.codecool.quest.logic.items.Item;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public abstract class Actor implements Drawable {
     private Cell cell;
     private int health = 10;
+    private int attackDamage;
+
     Inventory inventory = new Inventory();
 
 
@@ -28,14 +31,14 @@ public abstract class Actor implements Drawable {
                 cell.setActor(nextCell.getActor());
                 nextCell.setActor(this);
                 cell = nextCell;
-            } else if (!nextCell.getTileName().matches("wall|empty|closedDoor") && (nextCell.getActor() == null || !nextCell.getActor().getTileName().matches("skeleton"))) {
+            } else if (!nextCell.getTileName().matches("wall|empty|closedDoor|spiderWeb") && (nextCell.getActor() == null || !nextCell.getActor().getTileName().matches("skeleton|golem"))) {
                 if (nextCell.getItem() != null) {
                     inventory.getInventory().add(nextCell.getItem());
                     cell.setActor(null);
                     nextCell.setItem(null);
                     nextCell.setActor(this);
                     cell = nextCell;
-                } else if (!nextCell.getTileName().matches("wall|empty") && (nextCell.getActor() == null || !nextCell.getActor().getTileName().matches("skeleton"))) {
+                } else if (!nextCell.getTileName().matches("wall|empty|spiderWeb") && (nextCell.getActor() == null || !nextCell.getActor().getTileName().matches("skeleton|golem|spider"))) {
                     cell.setActor(null);
                     nextCell.setActor(this);
                     cell = nextCell;
@@ -44,6 +47,26 @@ public abstract class Actor implements Drawable {
 
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Index out of bounds:" + e);
+        }
+    }
+
+    public void moveRandomly(){
+
+        Random randomStep = new Random();
+        int random = randomStep.nextInt(4);
+        switch (random){
+            case 0:
+                move(1,0);
+                break;
+            case 1:
+                move(0,1);
+                break;
+            case 2:
+                move(-1,0);
+                break;
+            case 3:
+                move(0,-1);
+                break;
         }
     }
 
@@ -69,5 +92,13 @@ public abstract class Actor implements Drawable {
 
     public int getY() {
         return cell.getY();
+    }
+
+    public int getAttackDamage() {
+        return attackDamage;
+    }
+
+    public void setAttackDamage(int attackDamage) {
+        this.attackDamage = attackDamage;
     }
 }
