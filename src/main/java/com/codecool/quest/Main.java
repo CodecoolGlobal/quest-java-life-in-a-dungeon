@@ -213,6 +213,7 @@ public class Main extends Application {
     public void changeMapAndKeepInventory() {
         ArrayList<Item> oldInv = map.getPlayer().getStuffedInventory();
         int oldHealth = map.getPlayer().getHealth();
+        String oldName = map.getPlayer().getName();
         if (MapLoader.getMapName().equals("map.txt")) {
             map = MapLoader.loadMap("map1.txt");
         } else if (MapLoader.getMapName().equals("map1.txt")) {
@@ -223,6 +224,7 @@ public class Main extends Application {
             map.getPlayer().getStuffedInventory().add(item);
         }
         map.getPlayer().setHealth(oldHealth);
+        map.getPlayer().setName(oldName);
         createSpiderTimers();
         createSkeletonTimers();
     }
@@ -244,7 +246,7 @@ public class Main extends Application {
                 if (spider.getTileName().equals("deathSkeleton")) {
                     spiderTimer.cancel();
                 }else {
-                    spider.moveRandomly();
+                    spider.moveRandomly(map);
                 }
             }
         };
@@ -269,7 +271,7 @@ public class Main extends Application {
                 if (skeleton.getTileName().equals("deathSkeleton")) {
                     skeletonTimer.cancel();
                 }else {
-                    skeleton.moveRandomly();
+                    skeleton.moveRandomly(map);
                     skeletonFight.monsterAttack(skeleton, map.getPlayer());
                 }
             }
