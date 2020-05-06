@@ -2,6 +2,7 @@ package com.codecool.quest.logic.actors;
 
 import com.codecool.quest.logic.Cell;
 import com.codecool.quest.logic.CellType;
+import com.codecool.quest.logic.GameMap;
 
 import java.util.Random;
 
@@ -25,7 +26,7 @@ public class Spider extends Actor {
     }
 
     @Override
-    public void move(int dx, int dy) {
+    public void move(int dx, int dy, GameMap map) {
         Cell nextCell = cell.getNeighbor(dx, dy);
         if (this.getTileName().equals("spider") && !nextCell.getTileName().matches("wall|empty|closedDoor") &&
                 (nextCell.getActor() == null || !nextCell.getActor().getTileName().matches("skeleton|player|golem|deathGolem|deathSkeleton|spider"))){
