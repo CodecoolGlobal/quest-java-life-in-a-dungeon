@@ -42,11 +42,14 @@ public class Main extends Application {
     Text nameLabel = new Text("Name: ");
     Text healthLabel = new Text("");
     Integer inventoryLength = 0;
+    Integer skullInventoryLength = 0;
     int shieldCount = 0;
     int swordCount = 0;
     int swordIndex = 2;
     int shieldIndex = 2;
     int keyIndex = 2;
+    int skullIndex = 2;
+    int skullRow = 6;
 
     public Main() throws FileNotFoundException {
     }
@@ -93,6 +96,10 @@ public class Main extends Application {
         keys.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         ui.add(keys, 0, 5);
 
+        Text skulls = new Text("Skulls:");
+        skulls.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        ui.add(skulls, 0, 6);
+
         ui.getColumnConstraints().add(new ColumnConstraints(80));
         ui.getColumnConstraints().add(new ColumnConstraints(18));
         ui.getColumnConstraints().add(new ColumnConstraints(30));
@@ -101,6 +108,7 @@ public class Main extends Application {
         ui.getRowConstraints().add(new RowConstraints(40));
         ui.getRowConstraints().add(new RowConstraints(20));
         ui.getRowConstraints().add(new RowConstraints(20));
+        ui.getRowConstraints().add(new RowConstraints(40));
         ui.getRowConstraints().add(new RowConstraints(40));
         ui.getRowConstraints().add(new RowConstraints(40));
         ui.getRowConstraints().add(new RowConstraints(40));
@@ -188,6 +196,69 @@ public class Main extends Application {
     private void refresh() {
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        mapDrawer();
+        addItemToGraphicInv();
+        addSkullToGraphicInv();
+        healthLabel.setText("" + map.getPlayer().getHealth());
+    }
+
+    public void changeMapAndKeepInventory() {
+        ArrayList<Item> oldInv = map.getPlayer().getStuffedInventory();
+        int oldHealth = map.getPlayer().getHealth();
+        //map = MapLoader.loadMap("map1.txt");
+        if (MapLoader.getMapName().equals("map.txt")) {
+            map = MapLoader.loadMap("map1.txt");
+        } else if (MapLoader.getMapName().equals("map1.txt")) {
+            map = MapLoader.loadMap("map.txt");
+        }
+
+        for (Item item : oldInv) {
+            map.getPlayer().getStuffedInventory().add(item);
+        }
+        map.getPlayer().setHealth(oldHealth);
+    }
+
+    public void addSkullToGraphicInv(){
+        if(skullInventoryLength < map.getPlayer().getSkullInventory().size()){
+            if(skullInventoryLength % 3 == 0 && skullInventoryLength != 0){
+                skullIndex = 2;
+                skullRow++;
+            }
+            Canvas skullCanvas = new Canvas();
+            makeCanvas(skullCanvas, "deathSkeleton", skullRow, skullIndex);
+            skullIndex++;
+            skullInventoryLength = map.getPlayer().getSkullInventory().size();
+        }
+    }
+
+    public void addItemToGraphicInv(){
+        if (inventoryLength < map.getPlayer().getStuffedInventory().size()) {
+            switch (map.getPlayer().getStuffedInventory().get(map.getPlayer().getStuffedInventory().size() - 1).getTileName()) {
+                case "sword":
+                    Canvas swordCanvas = new Canvas();
+                    makeCanvas(swordCanvas, "sword", 3, swordIndex);
+                    swordIndex++;
+                    swordCount++;
+                    break;
+                case "shield":
+                    Canvas shieldCanvas = new Canvas();
+                    makeCanvas(shieldCanvas, "shield", 4, shieldIndex);
+                    shieldIndex++;
+                    shieldCount++;
+                    break;
+                case "key":
+                    Canvas keyCanvas = new Canvas();
+                    makeCanvas(keyCanvas, "key", 5, keyIndex);
+                    keyIndex++;
+                    String musicPath = "src/main/resources/look_at_my_horse.wav";
+                    /*playAudio.playMusic(musicPath);*/
+                    break;
+            }
+            inventoryLength = map.getPlayer().getStuffedInventory().size();
+        }
+    }
+
+    public void mapDrawer() {
         int playerXPos = map.getPlayer().getX();
         int playerYPos = map.getPlayer().getY();
         int horizontalStartPos = -1; // Starting position of playing screen, in a horizontal way from left.
@@ -232,46 +303,5 @@ public class Main extends Application {
                 }
             }
         }
-        if (inventoryLength < map.getPlayer().getStuffedInventory().size()) {
-            switch (map.getPlayer().getStuffedInventory().get(map.getPlayer().getStuffedInventory().size() - 1).getTileName()) {
-                case "sword":
-                    Canvas swordCanvas = new Canvas();
-                    makeCanvas(swordCanvas, "sword", 3, swordIndex);
-                    swordIndex++;
-                    swordCount++;
-                    break;
-                case "shield":
-                    Canvas shieldCanvas = new Canvas();
-                    makeCanvas(shieldCanvas, "shield", 4, shieldIndex);
-                    shieldIndex++;
-                    shieldCount++;
-                    break;
-                case "key":
-                    Canvas keyCanvas = new Canvas();
-                    makeCanvas(keyCanvas, "key", 5, keyIndex);
-                    keyIndex++;
-                    String musicPath = "src/main/resources/look_at_my_horse.wav";
-                    /*playAudio.playMusic(musicPath);*/
-                    break;
-            }
-            inventoryLength = map.getPlayer().getStuffedInventory().size();
-        }
-        healthLabel.setText("" + map.getPlayer().getHealth());
-    }
-
-    public void changeMapAndKeepInventory() {
-        ArrayList<Item> oldInv = map.getPlayer().getStuffedInventory();
-        int oldHealth = map.getPlayer().getHealth();
-        //map = MapLoader.loadMap("map1.txt");
-        if (MapLoader.getMapName().equals("map.txt")) {
-            map = MapLoader.loadMap("map1.txt");
-        } else if (MapLoader.getMapName().equals("map1.txt")) {
-            map = MapLoader.loadMap("map.txt");
-        }
-
-        for (Item item : oldInv) {
-            map.getPlayer().getStuffedInventory().add(item);
-        }
-        map.getPlayer().setHealth(oldHealth);
     }
 }
