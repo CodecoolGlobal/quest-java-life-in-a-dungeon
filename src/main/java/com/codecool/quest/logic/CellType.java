@@ -8,7 +8,8 @@ public enum CellType {
     OPENDOOR("openDoor"),
     EXIT("exitDoor"),
     TREE("tree"),
-    GRASS("grass");
+    GRASS("grass"),
+    SPIDERWEB("spiderWeb");
 
     private final String tileName;
 

@@ -1,38 +1,36 @@
 package com.codecool.quest.logic.actors;
 
 import com.codecool.quest.logic.Cell;
-import com.codecool.quest.logic.actors.Actor;
+import com.codecool.quest.logic.CellType;
 
-import java.util.ArrayList;
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
-public class Skeleton extends Actor {
+public class Spider extends Actor {
     private Cell cell;
 
 
-    public Skeleton(Cell cell) {
+    public Spider(Cell cell) {
         super(cell);
+        setHealth(20);
+        setAttackDamage(1);
         this.cell = cell;
-        setAttackDamage(2);
     }
 
     @Override
     public String getTileName() {
-        if (this.getHealth() <= 0){
-            return "deathSkeleton";
+        if (this.getHealth() > 0) {
+            return "spider";
         }
-        return "skeleton";
+        return "floor";
     }
 
     @Override
     public void move(int dx, int dy) {
         Cell nextCell = cell.getNeighbor(dx, dy);
-        if (this.getTileName().equals("skeleton") && !nextCell.getTileName().matches("wall|empty|closedDoor|spiderWeb") &&
+        if (this.getTileName().equals("spider") && !nextCell.getTileName().matches("wall|empty|closedDoor") &&
                 (nextCell.getActor() == null || !nextCell.getActor().getTileName().matches("skeleton|player|golem|deathGolem|deathSkeleton|spider"))){
             cell.setActor(null);
+            new SpiderWeb(cell);
             nextCell.setActor(this);
             cell = nextCell;
         }

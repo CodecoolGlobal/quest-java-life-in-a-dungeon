@@ -7,6 +7,7 @@ public class Player extends Actor {
     String name;
     public Player(Cell cell) {
         super(cell);
+        setAttackDamage(5);
     }
 
     public void setName(String name) {

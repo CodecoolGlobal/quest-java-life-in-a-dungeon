@@ -1,13 +1,14 @@
 package com.codecool.quest;
 
 import com.codecool.quest.logic.*;
+import com.codecool.quest.logic.actors.Skeleton;
+import com.codecool.quest.logic.actors.Spider;
 import com.codecool.quest.logic.items.Item;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -20,6 +21,9 @@ import com.codecool.quest.logic.RemoveNode;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 
 public class Main extends Application {
@@ -125,6 +129,9 @@ public class Main extends Application {
         primaryStage.setTitle("Codecool Quest");
         primaryStage.show();
 
+        createSkeletonTimers();
+        createSpiderTimers();
+        refreshTimer();
     }
 
     public static void drawItems(GraphicsContext newContext, String item) {
@@ -145,7 +152,6 @@ public class Main extends Application {
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
-        System.out.println(MapLoader.getMapName());
         switch (keyEvent.getCode()) {
             case UP:
                 map.getPlayer().move(0, -1, map);
@@ -167,6 +173,8 @@ public class Main extends Application {
 
         Fight fight = new Fight();
         boolean somethingBroke = fight.checkWhichKindOfFightYouFightWithEnemyIfYouHaveItemsInYourInventory(map.getPlayer());
+        //ArrayList<Skeleton> skeletons = map.returnSkeletons();
+        //for (Skeleton skeleton : skeletons){ fight.monsterAttack(skeleton, map.getPlayer());}
         if (somethingBroke) {
             int countCurrentShields = 0;
             for (Item item : map.getPlayer().getStuffedInventory()) {
@@ -205,7 +213,6 @@ public class Main extends Application {
     public void changeMapAndKeepInventory() {
         ArrayList<Item> oldInv = map.getPlayer().getStuffedInventory();
         int oldHealth = map.getPlayer().getHealth();
-        //map = MapLoader.loadMap("map1.txt");
         if (MapLoader.getMapName().equals("map.txt")) {
             map = MapLoader.loadMap("map1.txt");
         } else if (MapLoader.getMapName().equals("map1.txt")) {
@@ -216,6 +223,69 @@ public class Main extends Application {
             map.getPlayer().getStuffedInventory().add(item);
         }
         map.getPlayer().setHealth(oldHealth);
+        createSpiderTimers();
+        createSkeletonTimers();
+    }
+
+    private void createSpiderTimers() {
+        ArrayList<Spider> spiders = map.returnSpiders();
+        for (Spider spider : spiders) {
+            createTimerForASpider(spider);
+        }
+    }
+
+    private void createTimerForASpider(Spider spider){
+
+        Timer spiderTimer = new Timer();
+        TimerTask spiderTimerTask = new TimerTask() {
+
+            @Override
+            public void run() {
+                if (spider.getTileName().equals("deathSkeleton")) {
+                    spiderTimer.cancel();
+                }else {
+                    spider.moveRandomly();
+                }
+            }
+        };
+        spiderTimer.schedule(spiderTimerTask, 0, 2000);
+    }
+
+    private void createSkeletonTimers() {
+        ArrayList<Skeleton> skeletons = map.returnSkeletons();
+        for (Skeleton skeleton : skeletons) {
+            createTimerForASkeleton(skeleton);
+        }
+    }
+
+    private void createTimerForASkeleton(Skeleton skeleton){
+
+        Timer skeletonTimer = new Timer();
+        Fight skeletonFight = new Fight();
+        TimerTask skeletonTimerTask = new TimerTask() {
+
+            @Override
+            public void run() {
+                if (skeleton.getTileName().equals("deathSkeleton")) {
+                    skeletonTimer.cancel();
+                }else {
+                    skeleton.moveRandomly();
+                    skeletonFight.monsterAttack(skeleton, map.getPlayer());
+                }
+            }
+        };
+        skeletonTimer.schedule(skeletonTimerTask, 0, 600);
+    }
+
+    private void refreshTimer(){
+        Timer refreshTimer = new Timer();
+        TimerTask refreshTimerTask = new TimerTask(){
+            @Override
+            public void run(){
+                refresh();
+            }
+        };
+        refreshTimer.schedule(refreshTimerTask, 0, 400);
     }
 
     public void addSkullToGraphicInv(){
@@ -239,6 +309,7 @@ public class Main extends Application {
                     makeCanvas(swordCanvas, "sword", 3, swordIndex);
                     swordIndex++;
                     swordCount++;
+                    map.getPlayer().setAttackDamage(10);
                     break;
                 case "shield":
                     Canvas shieldCanvas = new Canvas();
@@ -250,7 +321,7 @@ public class Main extends Application {
                     Canvas keyCanvas = new Canvas();
                     makeCanvas(keyCanvas, "key", 5, keyIndex);
                     keyIndex++;
-                    String musicPath = "src/main/resources/look_at_my_horse.wav";
+                    String musicPath = "srcs/main/resources/look_at_my_horse.wav";
                     /*playAudio.playMusic(musicPath);*/
                     break;
             }
