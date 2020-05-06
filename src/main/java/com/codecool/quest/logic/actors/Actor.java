@@ -16,15 +16,14 @@ public abstract class Actor implements Drawable {
         this.cell.setActor(this);
     }
 
-    public void move(int dx, int dy) {
-
+    public void move(int dx, int dy, GameMap map) {
         try {
             Cell nextCell = cell.getNeighbor(dx, dy);
 
             if(nextCell.getActor() != null && nextCell.getActor().getTileName().equals("deathSkeleton")){
                 HealthLogic.increaseLife((Player) cell.getActor(), 2);
             }
-            if(cell.getActor().getTileName().equals("deathPlayer")){
+            if(cell.getActor().getTileName().equals("deathPlayer") || map.getPlayer().getName().matches("Csaba|Isti|Áron|Viktor|Máté")){
                 cell.setActor(nextCell.getActor());
                 nextCell.setActor(this);
                 cell = nextCell;
