@@ -13,7 +13,7 @@ public class playAudio {
             clip.open(audioStr);
             clip.start();
         } catch (Exception e){
-            System.err.println("ERROR");
+            System.err.println("[ERROR] wrong path for audio file");
         }
     }
 }
