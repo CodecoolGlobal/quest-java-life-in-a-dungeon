@@ -68,7 +68,8 @@ public class Main extends Application {
 //        ui.add(newCanvas, 0,6);
 //        GraphicsContext newContext = newCanvas.getGraphicsContext2D();
 //        newContext.drawImage(Tiles.tileset, 1*34, 31*34, 32, 32,1,1, 32,32);
-
+        ui.setStyle("-fx-background-color: #472D3B");
+        
         NameCharacter.display(map);
         Text health = new Text("Health:");
         health.setFont(Font.font("Arial", FontWeight.BOLD, 20));
@@ -90,14 +91,17 @@ public class Main extends Application {
 
         Text swords = new Text("Swords:");
         swords.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        swords.setFill(Color.ANTIQUEWHITE);
         ui.add(swords, 0, 3);
 
         Text shields = new Text("Shields:");
         shields.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        shields.setFill(Color.ANTIQUEWHITE);
         ui.add(shields, 0, 4);
 
         Text keys = new Text("Keys:");
         keys.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        keys.setFill(Color.ANTIQUEWHITE);
         ui.add(keys, 0, 5);
 
         Text skulls = new Text("Skulls:");
