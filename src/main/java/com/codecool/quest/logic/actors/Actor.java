@@ -50,22 +50,22 @@ public abstract class Actor implements Drawable {
         }
     }
 
-    public void moveRandomly(){
+    public void moveRandomly(GameMap map){
 
         Random randomStep = new Random();
         int random = randomStep.nextInt(4);
         switch (random){
             case 0:
-                move(1,0);
+                move(1,0, map);
                 break;
             case 1:
-                move(0,1);
+                move(0,1, map);
                 break;
             case 2:
-                move(-1,0);
+                move(-1,0, map);
                 break;
             case 3:
-                move(0,-1);
+                move(0,-1, map);
                 break;
         }
     }
