@@ -73,20 +73,26 @@ public class Main extends Application {
         NameCharacter.display(map);
         Text health = new Text("Health:");
         health.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        health.setFill(Color.ANTIQUEWHITE);
         ui.add(health, 0, 1);
 
         nameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        nameLabel.setFill(Color.ANTIQUEWHITE);
         ui.add(nameLabel, 0, 0);
 
         Text name = new Text("");
         name.setText(map.getPlayer().getName());
+        name.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        name.setFill(Color.ANTIQUEWHITE);
         ui.add(name, 1, 0);
 
         healthLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
-        ui.add(healthLabel, 1, 1);
+        healthLabel.setFill(Color.ANTIQUEWHITE);
+        ui.add(healthLabel, 2, 1);
 
         Text inventory = new Text("Inventory:");
         inventory.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+        inventory.setFill(Color.ANTIQUEWHITE);
         ui.add(inventory, 0, 2);
 
         Text swords = new Text("Swords:");
@@ -106,6 +112,7 @@ public class Main extends Application {
 
         Text skulls = new Text("Skulls:");
         skulls.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        skulls.setFill(Color.ANTIQUEWHITE);
         ui.add(skulls, 0, 6);
 
         ui.getColumnConstraints().add(new ColumnConstraints(80));
