@@ -1,6 +1,7 @@
 package com.codecool.quest.logic.actors;
 
 import com.codecool.quest.logic.Cell;
+import com.codecool.quest.logic.GameMap;
 import com.codecool.quest.logic.actors.Actor;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class Skeleton extends Actor {
     }
 
     @Override
-    public void move(int dx, int dy) {
+    public void move(int dx, int dy, GameMap map) {
         Cell nextCell = cell.getNeighbor(dx, dy);
         if (this.getTileName().equals("skeleton") && !nextCell.getTileName().matches("wall|empty|closedDoor|spiderWeb") &&
                 (nextCell.getActor() == null || !nextCell.getActor().getTileName().matches("skeleton|player|golem|deathGolem|deathSkeleton|spider"))){
