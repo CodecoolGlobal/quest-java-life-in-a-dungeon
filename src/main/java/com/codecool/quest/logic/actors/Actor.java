@@ -22,6 +22,7 @@ public abstract class Actor implements Drawable {
 
             if(nextCell.getActor() != null && nextCell.getActor().getTileName().equals("deathSkeleton")){
                 HealthLogic.increaseLife((Player) cell.getActor(), 2);
+                inventory.getSkullInventory().add(nextCell.getActor());
             }
             if(cell.getActor().getTileName().equals("deathPlayer") || map.getPlayer().getName().matches("Csaba|Isti|Áron|Viktor|Máté")){
                 cell.setActor(nextCell.getActor());
@@ -48,6 +49,10 @@ public abstract class Actor implements Drawable {
 
     public ArrayList<Item> getStuffedInventory() {
         return inventory.getInventory();
+    }
+
+    public ArrayList<Actor> getSkullInventory(){
+        return inventory.getSkullInventory();
     }
 
     public void setHealth(int newHealth) {
