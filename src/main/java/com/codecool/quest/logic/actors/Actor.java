@@ -2,6 +2,7 @@ package com.codecool.quest.logic.actors;
 
 import com.codecool.quest.logic.*;
 import com.codecool.quest.logic.items.Item;
+import com.codecool.quest.logic.items.Letter;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -36,7 +37,16 @@ public abstract class Actor implements Drawable {
                 nextCell.setActor(this);
                 cell = nextCell;
             } else if (!nextCell.getTileName().matches("wall|empty|closedDoor|spiderWeb") && (nextCell.getActor() == null || !nextCell.getActor().getTileName().matches("skeleton|golem"))) {
-                if (nextCell.getItem() != null) {
+                if (nextCell.getItem() != null && nextCell.getItem().getTileName().equals("letter")){
+                    Popup popup = new Popup();
+                    popup.display(nextCell.getItem().getLetterContent());
+                    cell.setActor(null);
+                    nextCell.setItem(null);
+                    nextCell.setActor(this);
+                    cell = nextCell;
+
+                }
+                else if (nextCell.getItem() != null && !nextCell.getItem().getTileName().equals("letter")) {
                     inventory.getInventory().add(nextCell.getItem());
                     cell.setActor(null);
                     nextCell.setItem(null);
