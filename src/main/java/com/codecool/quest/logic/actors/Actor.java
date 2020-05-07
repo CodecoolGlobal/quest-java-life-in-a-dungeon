@@ -23,35 +23,50 @@ public abstract class Actor implements Drawable {
         try {
             Cell nextCell = cell.getNeighbor(dx, dy);
 
-            if(nextCell.getActor() != null && nextCell.getActor().getTileName().equals("deathSkeleton")){
-                HealthLogic.increaseLife((Player) cell.getActor(), 1);
-                inventory.getSkullInventory().add(nextCell.getActor());
+            if (nextCell.getActor() != null) {
+                String deadEnemy = nextCell.getActor().getTileName();
+                switch (deadEnemy) {
+                    case "deathSkeleton":
+                        collectSkullAndLife(nextCell, 1);
+                        break;
+                    case "deathGolem":
+                        collectSkullAndLife(nextCell, 3);
+                        break;
+                }
             }
-            if(nextCell.getActor() != null && nextCell.getActor().getTileName().equals("deathGolem")) {
-                HealthLogic.increaseLife((Player) cell.getActor(), 3);
-                inventory.getSkullInventory().add(nextCell.getActor());
-            }
+
             if(cell.getActor().getTileName().equals("deathPlayer") || map.getPlayer().getName().matches("Csaba|Isti|Áron|Viktor|Máté")){
-                cell.setActor(nextCell.getActor());
-                nextCell.setActor(this);
-                cell = nextCell;
+                moveWithoutGetItem(nextCell);
             } else if (!nextCell.getTileName().matches("wall|empty|closedDoor|spiderWeb") && (nextCell.getActor() == null || !nextCell.getActor().getTileName().matches("skeleton|golem"))) {
                 if (nextCell.getItem() != null) {
-                    inventory.getInventory().add(nextCell.getItem());
-                    cell.setActor(null);
-                    nextCell.setItem(null);
-                    nextCell.setActor(this);
-                    cell = nextCell;
+                    moveAndGetItem(nextCell);
                 } else if (!nextCell.getTileName().matches("wall|empty|spiderWeb") && (nextCell.getActor() == null || !nextCell.getActor().getTileName().matches("skeleton|golem|spider"))) {
-                    cell.setActor(null);
-                    nextCell.setActor(this);
-                    cell = nextCell;
+                    moveWithoutGetItem(nextCell);
                 }
             }
 
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Index out of bounds:" + e);
         }
+    }
+
+    public void collectSkullAndLife(Cell nextCell, int increaseLife){
+        HealthLogic.increaseLife((Player) cell.getActor(), increaseLife);
+        inventory.getSkullInventory().add(nextCell.getActor());
+    }
+
+    public void moveWithoutGetItem(Cell nextCell) {
+        cell.setActor(null);
+        nextCell.setActor(this);
+        cell = nextCell;
+    }
+
+    public void moveAndGetItem(Cell nextCell) {
+        inventory.getInventory().add(nextCell.getItem());
+        cell.setActor(null);
+        nextCell.setItem(null);
+        nextCell.setActor(this);
+        cell = nextCell;
     }
 
     public void moveRandomly(GameMap map){

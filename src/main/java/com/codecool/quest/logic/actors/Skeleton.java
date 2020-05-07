@@ -26,9 +26,7 @@ public class Skeleton extends Actor {
         Cell nextCell = cell.getNeighbor(dx, dy);
         if (this.getTileName().equals("skeleton") && !nextCell.getTileName().matches("wall|empty|closedDoor|spiderWeb") &&
                 (nextCell.getActor() == null || !nextCell.getActor().getTileName().matches("skeleton|player|golem|deathGolem|deathSkeleton|spider"))){
-            cell.setActor(null);
-            nextCell.setActor(this);
-            cell = nextCell;
+            moveWithoutGetItem(nextCell);
         }
     }
 }
