@@ -4,12 +4,14 @@ import com.codecool.quest.logic.actors.Actor;
 import com.codecool.quest.logic.items.Door;
 import com.codecool.quest.logic.items.Item;
 import com.codecool.quest.logic.actors.SpiderWeb;
+import com.codecool.quest.logic.items.Letter;
 
 public class Cell implements Drawable {
     private CellType type;
     private Actor actor;
     private Item item;
     private Door door;
+    private Letter letter;
     private SpiderWeb spiderWeb;
     private GameMap gameMap;
     private int x, y;
@@ -63,6 +65,14 @@ public class Cell implements Drawable {
 
     public Cell getNeighbor(int dx, int dy) {
         return gameMap.getCell(x + dx, y + dy);
+    }
+
+    public Letter getLetter() {
+        return letter;
+    }
+
+    public void setLetter(Letter letter) {
+        this.letter = letter;
     }
 
     @Override
