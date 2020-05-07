@@ -57,7 +57,7 @@ public class Fight {
         }
     }
 
-    public void monsterAttack(Actor actor, Player player) {
+    public boolean monsterAttack(Actor actor, Player player) {
         ArrayList<Item> inventory = player.getStuffedInventory();
         ArrayList<String> inventory1 = new ArrayList<>();
 
@@ -69,16 +69,18 @@ public class Fight {
         for (Cell element : arrayCell) {
             if (element.getActor() != null && element.getActor() == actor && player.getHealth() > 0 && !inventory1.contains("shield") && actor.getHealth() > 0) {
                 HealthLogic.decreaseLife(player, actor.getAttackDamage(), actor, player.getAttackDamage());
+                return false;
 
             } else if (element.getActor() != null && element.getActor() == actor && player.getHealth() > 0 && inventory1.contains("shield") && actor.getHealth() > 0) {
                 int ind = inventory1.indexOf("shield");
-
-                HealthLogic.decreaseLife(player, 0, element.getActor(), actor.getAttackDamage());
-                inventory.get(ind).setHealth(inventory.get(ind).getHealth() - element.getActor().getAttackDamage());
+                HealthLogic.decreaseLife(player, 0, element.getActor(), player.getAttackDamage());
+                inventory.get(ind).setHealth(inventory.get(ind).getHealth() - actor.getAttackDamage());
                 if (inventory.get(ind).getHealth() == 0) {
                     inventory.remove(inventory.get(ind));
                 }
+                return true;
             }
         }
+        return false;
     }
 }
