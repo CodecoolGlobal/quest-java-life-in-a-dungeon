@@ -8,17 +8,13 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.text.Text;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import com.codecool.quest.logic.RemoveNode;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -32,18 +28,9 @@ public class Main extends Application {
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
-
-
-    FileInputStream imageStream = new FileInputStream("./src/main/resources/sword.png");
-    Image sword = new Image(imageStream, 30, 30, false, false);
-    FileInputStream imageStream2 = new FileInputStream("./src/main/resources/shield.png");
-    Image shield = new Image(imageStream2, 30, 30, false, false);
-    FileInputStream imageStream1 = new FileInputStream("./src/main/resources/key.png");
-    Image key = new Image(imageStream1, 35, 20, false, false);
     GridPane ui = new GridPane();
 
-    Text nameLabel = new Text("Name: ");
-    Text healthLabel = new Text("");
+
     Integer inventoryLength = 0;
     Integer skullInventoryLength = 0;
     int shieldCount = 0;
@@ -53,7 +40,8 @@ public class Main extends Application {
     int keyIndex = 2;
     int skullIndex = 2;
     int skullRow = 6;
-
+    Text name = new Text("");
+    Text healthLabel = new Text("");
     public Main() throws FileNotFoundException {
     }
 
@@ -65,64 +53,11 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         ui.setStyle("-fx-background-color: #472D3B");
-        
+
         NameCharacter.display(map);
-        Text health = new Text("Health:");
-        health.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-        health.setFill(Color.ANTIQUEWHITE);
-        ui.add(health, 0, 1);
+        BuildUi.addToUi(ui, name, healthLabel, map);
+        BuildUi.createConstraints(ui);
 
-        nameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
-        nameLabel.setFill(Color.ANTIQUEWHITE);
-        ui.add(nameLabel, 0, 0);
-
-        Text name = new Text("");
-        name.setText(map.getPlayer().getName());
-        name.setFont(Font.font("Arial", FontWeight.BOLD, 15));
-        name.setFill(Color.ANTIQUEWHITE);
-        ui.add(name, 1, 0);
-
-        healthLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
-        healthLabel.setFill(Color.ANTIQUEWHITE);
-        ui.add(healthLabel, 2, 1);
-
-        Text inventory = new Text("Inventory:");
-        inventory.setFont(Font.font("Arial", FontWeight.BOLD, 18));
-        inventory.setFill(Color.ANTIQUEWHITE);
-        ui.add(inventory, 0, 2);
-
-        Text swords = new Text("Swords:");
-        swords.setFont(Font.font("Arial", FontWeight.BOLD, 15));
-        swords.setFill(Color.ANTIQUEWHITE);
-        ui.add(swords, 0, 3);
-
-        Text shields = new Text("Shields:");
-        shields.setFont(Font.font("Arial", FontWeight.BOLD, 15));
-        shields.setFill(Color.ANTIQUEWHITE);
-        ui.add(shields, 0, 4);
-
-        Text keys = new Text("Keys:");
-        keys.setFont(Font.font("Arial", FontWeight.BOLD, 15));
-        keys.setFill(Color.ANTIQUEWHITE);
-        ui.add(keys, 0, 5);
-
-        Text skulls = new Text("Skulls:");
-        skulls.setFont(Font.font("Arial", FontWeight.BOLD, 15));
-        skulls.setFill(Color.ANTIQUEWHITE);
-        ui.add(skulls, 0, 6);
-
-        ui.getColumnConstraints().add(new ColumnConstraints(80));
-        ui.getColumnConstraints().add(new ColumnConstraints(18));
-        ui.getColumnConstraints().add(new ColumnConstraints(30));
-        ui.getColumnConstraints().add(new ColumnConstraints(30));
-        ui.getColumnConstraints().add(new ColumnConstraints(30));
-        ui.getRowConstraints().add(new RowConstraints(40));
-        ui.getRowConstraints().add(new RowConstraints(20));
-        ui.getRowConstraints().add(new RowConstraints(20));
-        ui.getRowConstraints().add(new RowConstraints(40));
-        ui.getRowConstraints().add(new RowConstraints(40));
-        ui.getRowConstraints().add(new RowConstraints(40));
-        ui.getRowConstraints().add(new RowConstraints(40));
 
         BorderPane borderPane = new BorderPane();
         borderPane.setCenter(canvas);
@@ -142,15 +77,10 @@ public class Main extends Application {
     }
 
     public static void drawItems(GraphicsContext newContext, String item) {
-        Tiles.Tile tile = (Tiles.Tile) Tiles.getTileMap().get(item);
-        newContext.drawImage(Tiles.getImage(), tile.x, tile.y, 32, 32, 1, 1, 32, 32);
+        Tiles.Tile tile = Tiles.getTileMap().get(item);
+        newContext.drawImage(Tiles.getImage(), tile.x, tile.y, Tiles.TILE_WIDTH, Tiles.TILE_WIDTH, 1, 1, Tiles.TILE_WIDTH, Tiles.TILE_WIDTH);
     }
 
-
-    public static void drawItem2(GraphicsContext newContext, String item) {
-        Tiles.Tile tile = (Tiles.Tile) Tiles.getTileMap().get(item);
-        newContext.drawImage(Tiles.getImage(), tile.x, tile.y, tile.w, tile.h, 1, 1, 32, 32);
-    }
 
     public void makeCanvas(Canvas newName, String item, int row, int index) {
         newName = new Canvas(Tiles.TILE_WIDTH, Tiles.TILE_WIDTH);
@@ -177,11 +107,26 @@ public class Main extends Application {
                 refresh();
                 break;
         }
+        Fight();
+        checkAllKindOfDoors();
+        refresh();
+    }
 
+
+    public void checkAllKindOfDoors(){
+        Cell cell = map.getPlayer().getCell();
+
+        if (cell.getTileName().equals("exitDoor")) { changeMapAndKeepInventory(); }
+
+        if (DoorOpen.checkDoors(map.getPlayer().getStuffedInventory(), map.getPlayer(), ui, keyIndex)) {
+            keyIndex--;
+            inventoryLength--;
+        }
+    }
+
+    public void Fight() {
         Fight fight = new Fight();
         boolean somethingBroke = fight.checkWhichKindOfFightYouFightWithEnemyIfYouHaveItemsInYourInventory(map.getPlayer());
-        //ArrayList<Skeleton> skeletons = map.returnSkeletons();
-        //for (Skeleton skeleton : skeletons){ fight.monsterAttack(skeleton, map.getPlayer());}
         if (somethingBroke) {
             int countCurrentShields = 0;
             for (Item item : map.getPlayer().getStuffedInventory()) {
@@ -196,15 +141,6 @@ public class Main extends Application {
                 inventoryLength--;
             }
         }
-        Cell cell = map.getPlayer().getCell();
-        if (cell.getTileName().equals("exitDoor")) {
-            changeMapAndKeepInventory();
-        }
-        if (DoorOpen.checkDoors(map.getPlayer().getStuffedInventory(), map.getPlayer(), ui, keyIndex)) {
-            keyIndex--;
-            inventoryLength--;
-        }
-        refresh();
     }
 
 
@@ -330,7 +266,7 @@ public class Main extends Application {
                     Canvas keyCanvas = new Canvas();
                     makeCanvas(keyCanvas, "key", 5, keyIndex);
                     keyIndex++;
-                    String musicPath = "srcs/main/resources/look_at_my_horse.wav";
+                    String musicPath = "src/main/resources/look_at_my_horse.wav";
                     /*playAudio.playMusic(musicPath);*/
                     break;
             }
