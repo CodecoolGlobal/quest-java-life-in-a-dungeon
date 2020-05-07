@@ -65,7 +65,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         ui.setStyle("-fx-background-color: #472D3B");
-        
+
         NameCharacter.display(map);
         Text health = new Text("Health:");
         health.setFont(Font.font("Arial", FontWeight.BOLD, 20));
@@ -119,6 +119,11 @@ public class Main extends Application {
         ui.getRowConstraints().add(new RowConstraints(40));
         ui.getRowConstraints().add(new RowConstraints(20));
         ui.getRowConstraints().add(new RowConstraints(20));
+        ui.getRowConstraints().add(new RowConstraints(40));
+        ui.getRowConstraints().add(new RowConstraints(40));
+        ui.getRowConstraints().add(new RowConstraints(40));
+        ui.getRowConstraints().add(new RowConstraints(40));
+        ui.getRowConstraints().add(new RowConstraints(40));
         ui.getRowConstraints().add(new RowConstraints(40));
         ui.getRowConstraints().add(new RowConstraints(40));
         ui.getRowConstraints().add(new RowConstraints(40));
@@ -197,9 +202,26 @@ public class Main extends Application {
             }
         }
         Cell cell = map.getPlayer().getCell();
-        if (cell.getTileName().equals("exitDoor")) {
+        if (cell.getTileName().equals(("exitDoor")) && MapLoader.getMapName().equals("map.txt")) {
+            changeMapAndKeepInventory();
+        } else if (cell.getTileName().equals("exitDoor") && MapLoader.getMapName().equals("map1.txt") && map.getPlayer().getSkullInventory().size() < 3) {
+            Text warningFirstRow = new Text("You need 3 skull!");
+            warningFirstRow.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+            warningFirstRow.setFill(Color.RED);
+            ui.add(warningFirstRow, 0, 12);
+        }else if(cell.getTileName().equals("exitDoor") && MapLoader.getMapName().equals("map1.txt") && map.getPlayer().getSkullInventory().size() >= 3) {
+            RemoveNode.removeNodeByRowColumnIndex(12, 0, ui);
+            changeMapAndKeepInventory();
+        }else if (cell.getTileName().equals("exitDoor") && MapLoader.getMapName().equals("map2.txt") && map.getPlayer().getSkullInventory().size() < 10) {
+            Text warning = new Text("You need 10 skull!");
+            warning.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+            warning.setFill(Color.RED);
+            ui.add(warning, 0, 12);
+        }else if (cell.getTileName().equals("exitDoor") && MapLoader.getMapName().equals("map2.txt") && map.getPlayer().getSkullInventory().size() >= 10) {
+            RemoveNode.removeNodeByRowColumnIndex(12, 0, ui);
             changeMapAndKeepInventory();
         }
+
         if (DoorOpen.checkDoors(map.getPlayer().getStuffedInventory(), map.getPlayer(), ui, keyIndex)) {
             keyIndex--;
             inventoryLength--;
@@ -215,6 +237,11 @@ public class Main extends Application {
         addItemToGraphicInv();
         addSkullToGraphicInv();
         healthLabel.setText("" + map.getPlayer().getHealth());
+        if (map.getPlayer().getHealth() > 5){
+            healthLabel.setFill(Color.ANTIQUEWHITE);
+        }else{
+            healthLabel.setFill(Color.RED);
+        }
     }
 
     public void changeMapAndKeepInventory() {
@@ -223,7 +250,9 @@ public class Main extends Application {
         String oldName = map.getPlayer().getName();
         if (MapLoader.getMapName().equals("map.txt")) {
             map = MapLoader.loadMap("map1.txt");
-        } else if (MapLoader.getMapName().equals("map1.txt")) {
+        }else if (MapLoader.getMapName().equals("map1.txt")) {
+            map = MapLoader.loadMap("map2.txt");
+        }else if (MapLoader.getMapName().equals("map2.txt")){
             map = MapLoader.loadMap("map.txt");
         }
 
