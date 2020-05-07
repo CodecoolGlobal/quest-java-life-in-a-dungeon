@@ -2,6 +2,7 @@ package com.codecool.quest.logic;
 
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
 public class RemoveNode {
