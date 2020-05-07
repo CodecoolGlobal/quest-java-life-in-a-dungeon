@@ -6,6 +6,7 @@ import com.codecool.quest.logic.Drawable;
 public abstract class Item implements Drawable {
     private Cell cell;
     private int health;
+    private String letterContent;
 
     public Item(Cell cell) {
         this.cell = cell;
@@ -30,5 +31,13 @@ public abstract class Item implements Drawable {
 
     public void setHealth(int health) {
         this.health = health;
+    }
+
+    public String getLetterContent() {
+        return letterContent;
+    }
+
+    public void setLetterContent(String letterContent) {
+        this.letterContent = letterContent;
     }
 }
