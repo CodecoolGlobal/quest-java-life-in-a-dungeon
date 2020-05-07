@@ -24,7 +24,11 @@ public abstract class Actor implements Drawable {
             Cell nextCell = cell.getNeighbor(dx, dy);
 
             if(nextCell.getActor() != null && nextCell.getActor().getTileName().equals("deathSkeleton")){
-                HealthLogic.increaseLife((Player) cell.getActor(), 2);
+                HealthLogic.increaseLife((Player) cell.getActor(), 1);
+                inventory.getSkullInventory().add(nextCell.getActor());
+            }
+            if(nextCell.getActor() != null && nextCell.getActor().getTileName().equals("deathGolem")) {
+                HealthLogic.increaseLife((Player) cell.getActor(), 3);
                 inventory.getSkullInventory().add(nextCell.getActor());
             }
             if(cell.getActor().getTileName().equals("deathPlayer") || map.getPlayer().getName().matches("Csaba|Isti|Áron|Viktor|Máté")){
