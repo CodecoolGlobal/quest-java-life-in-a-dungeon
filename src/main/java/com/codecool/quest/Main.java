@@ -348,8 +348,8 @@ public class Main extends Application {
         int horizontalStartPos = -1; // Starting position of playing screen, in a horizontal way from left.
         int leftFromPlayer = 20;
         int rightFromPlayer = 20;
-        int topFromPlayer = 12;
-        int bottomFromPlayer = 12;
+        int topFromPlayer = 14;
+        int bottomFromPlayer = 14;
 
         // When player goes to the left side of the screen, you will see fewer images.
         if (playerXPos - 21 <= horizontalStartPos) {
@@ -365,10 +365,10 @@ public class Main extends Application {
             }
 
             // When player goes to the top side of the screen, you will see ewer images.
-            if (playerYPos - 12 <= verticalStartPos) {
+            if (playerYPos - 14 <= verticalStartPos) {
                 topFromPlayer = playerYPos - 1;
-                bottomFromPlayer = playerYPos + 12 + (12 - topFromPlayer);
-            } else if (playerYPos + 12 >= verticalStartPos + map.getHeight()) {
+                bottomFromPlayer = playerYPos + 14 + (14 - topFromPlayer);
+            } else if (playerYPos + 14 >= verticalStartPos + map.getHeight()) {
                 bottomFromPlayer = map.getHeight() - playerYPos;
                 /*topFromPlayer--;*/
             }
