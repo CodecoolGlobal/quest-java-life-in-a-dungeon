@@ -1,14 +1,10 @@
 package com.codecool.quest.logic;
 
-import com.codecool.quest.Main;
 import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
-import jdk.jfr.Event;
-
-import java.util.Map;
 
 
 public class NameCharacter {
@@ -22,8 +18,6 @@ public class NameCharacter {
 
             Label label1 = new Label("Give a name:");
             TextField textF = new TextField();
-            /*TilePane tilePane = new TilePane();
-            Event event = new Event();*/
 
             Button button1 = new Button("Save");
             button1.setOnAction(e -> map.getPlayer().setName(textF.getText()));
