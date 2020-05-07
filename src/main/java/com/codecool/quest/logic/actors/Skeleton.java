@@ -2,13 +2,6 @@ package com.codecool.quest.logic.actors;
 
 import com.codecool.quest.logic.Cell;
 import com.codecool.quest.logic.GameMap;
-import com.codecool.quest.logic.actors.Actor;
-
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 public class Skeleton extends Actor {
     private Cell cell;

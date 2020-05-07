@@ -3,11 +3,8 @@ package com.codecool.quest.logic;
 import com.codecool.quest.logic.actors.Actor;
 import com.codecool.quest.logic.actors.Player;
 import com.codecool.quest.logic.items.Item;
-import javafx.scene.layout.GridPane;
-import com.codecool.quest.logic.RemoveNode;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Fight {
 

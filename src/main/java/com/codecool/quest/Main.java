@@ -65,9 +65,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-//        ui.add(newCanvas, 0,6);
-//        GraphicsContext newContext = newCanvas.getGraphicsContext2D();
-//        newContext.drawImage(Tiles.tileset, 1*34, 31*34, 32, 32,1,1, 32,32);
         ui.setStyle("-fx-background-color: #472D3B");
         
         NameCharacter.display(map);
