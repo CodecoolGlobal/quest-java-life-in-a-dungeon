@@ -8,6 +8,7 @@ public class SpiderWeb extends Actor {
     public SpiderWeb(Cell cell){
         super(cell);
         this.setHealth(7);
+        cell.setType(CellType.SPIDERWEB);
     }
 
     @Override
