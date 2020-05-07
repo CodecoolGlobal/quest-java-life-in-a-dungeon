@@ -1,61 +1,51 @@
-75 60
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgw#######.#####wwgwgwgwwwgwgwgwwwg
-wwgwgwgw#k...s......#gwgw########wwgwgwgw
-wwgwgwgw#.......s...######......#wwgwgwgw
-wwgwgwgw#.............d.........#wwgwgwgw
-wwgwgwgw#....b......######......#wwgwgwgw
-wwgwgwgw#...........#gwgw#.i.o...............................................
-wwgwgwgw#...........#gwgw#......#wwgwgwgw
-wwgwgwgw#...........#gwgw#......#wwgwgwgw
-wwgwgwgw#####..######gwgw###..###wwgwgwgw
-wwgwgwgwgwgw#..#gwwgwgwgwgw#..#wwgwgwgwww
-wwgwgwgwgwgw#..#gwwgwgwgwgw#..#wwgwgwgw
-wwgwgwgwgwgw#..#gwwgwgwgwg##..##wwgwgwgw
-wwgwgwgwwg###..####gwgwgw#......#wwgwgwgw
-wwgwgwgwwg#..@....#gwgwgw#......#wwgwgwgw
-wwgwgwgwwg#.......#gwgwgw#......#wwgwgwgw
-wwgwgwgwwg#.....h.#gwgwgw#......#wwgwgwgw
-wwgwgwgwwg#....ph.#gwgwgw#......#wwgwgwgw
-wwgwgwgwwg#.....h.#gwgwgw#......#wwgwgwgw
-wwgwgwgwwg#o......#gwgwgw#...e..#wwgwgwgw
-wwgwgwgwwg#########gwgwgw########wwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
-wwgwgwgwwwgwgwg.wwgwgwgwwwgwgwgwwwgwgwgw
+75 50
+wwgwgwgwwwgwgwgwwwgwgwgwwwgwgwgwwwgwgwgwwwgwgwgwwwgwgwgwwwgwgwgwgwgwgwgwgwgwg
+gw          w             w        g             hhg    hh              w   g
+ww g   h#################################################hg      hhh        g
+w       #.........s....#...i...k...o...#..............h.#         h         g
+w       #..............########d########...........p...h#                   g
+w       #..s.......s...#.......z.......#................#        w          g
+w      g#..............#y.............q#....p...........#                   g
+w       #.........s....#...............#................#    w     g        g
+w       #..s...........#...............#hhh.............#                   g
+w    w  ################...............##################                   g
+w       #......b.......#...............................@#                   g
+w       #...........b..#x..............##################      wg           g
+w       #...b..........#...............n...............e#                   g
+w       #################################################                   g
+w    w                                                      w       g       g
+w                             g          w                                  g
+w         w        g                       w           g                    g
+w          g                                                                g
+w                    w                     h h   h              g           g
+w                           wg                                              g
+w   g                                                     hhh               g
+w                            w                               w              g
+w        g                               g                                  g
+w                                               g                           g
+w                        w                                       g          g
+w             w                                              www            g
+w                                                                           g
+w                                                                           g
+w                                                                           g
+w                                                                           g
+w                                                                           g
+w                                                                           g
+w                                                                           g
+w                                                                           g
+w                                                                           g
+w                                                                           g
+w                                                                           g
+w                                                                           g
+w                                                                           g
+w                                                                           g
+w                                                                           g
+w                                                                           g
+w                                                                           g
+w                                                                           g
+w                                                                           g
+w                                                                           g
+w                                                                           g
+w                                                                           g
+w                                                                           g
+wwgwgwgwwwgwgwgwwwgwgwgwwwgwgwgwwwgwgwgwwwgwgwgwwwgwgwgwwwgwgwgwgwgwgwgwgwgwg
